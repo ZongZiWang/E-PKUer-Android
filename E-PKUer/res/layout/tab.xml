@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	>
+
+	<LinearLayout android:id="@+id/widget_layout_yellow"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical">
+		<ListView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/listView2" />
+	</LinearLayout>
+	<LinearLayout android:id="@+id/widget_layout_pink"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical">
+		<ListView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/listView3" />
+	</LinearLayout>
+	<LinearLayout android:id="@+id/widget_layout_grey"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical">
+		<ListView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/listView4" />
+	</LinearLayout>
+</FrameLayout>

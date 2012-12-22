@@ -1,0 +1,279 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/restaurant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="25dp" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/restaurant_name"
+        android:layout_below="@+id/restaurant_name"
+        android:numStars="5" />
+
+    <TextView
+        android:id="@+id/tagRec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ratingBar"
+        android:layout_marginTop="10dp"
+        android:text="@string/recommendation"
+        android:textColor="#000000" />
+
+    <LinearLayout
+        android:id="@+id/recList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ratingBar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/tagRec"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/tagFee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recList"
+        android:text="@string/fee"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/Fee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/recList"
+        android:layout_below="@+id/recList"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/tagCrowd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tagFee"
+        android:layout_marginTop="5dp"
+        android:text="@string/crowd"
+        android:textColor="#000000" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/recList"
+        android:layout_below="@+id/Fee"
+        android:layout_marginLeft="0dp"
+        android:gravity="fill_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/crowd_high"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_marginLeft="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/vote_btn"
+            android:text="@string/crowd_high"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/crowd_mid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/vote_btn"
+            android:text="@string/crowd_mid"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/crowd_low"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/vote_btn"
+            android:text="@string/crowd_low"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/restaurant_view"
+        android:layout_width="100dp"
+        android:layout_height="62.5dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/restaurant_name"
+        android:layout_marginTop="5dp"
+        android:scaleType="fitCenter"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/moreView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/restaurant_view"
+        android:layout_below="@+id/restaurant_view"
+        android:text="@string/view_more"
+        android:textColor="#000000" />
+
+    <!-- latest 2 comments -->
+    
+    <View
+        android:id="@+id/div"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tagCrowd"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="7dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/newComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tagCrowd"
+        android:layout_below="@+id/div"
+        android:text="@string/new_comment"
+        android:textColor="#000000"
+        android:textSize="15dp" />
+
+    <View
+        android:id="@+id/div1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/newComment"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+    <!-- comment 1 -->
+    
+    <LinearLayout
+        android:id="@+id/cmt1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/div1"
+        android:gravity="fill_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/user1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="italic" />
+
+        <RatingBar
+            android:id="@+id/rating1"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5" >
+        </RatingBar>
+
+        <TextView
+            android:id="@+id/comment1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
+    </LinearLayout>
+    
+    <!-- comment 2 -->
+
+    <View
+        android:id="@+id/div2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/cmt1"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="7dp"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:id="@+id/cmt2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/div2"
+        android:gravity="fill_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/user2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textStyle="italic" />
+
+        <RatingBar
+            android:id="@+id/rating2"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5" >
+        </RatingBar>
+
+        <TextView
+            android:id="@+id/comment2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/div3"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/cmt2"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:gravity="fill_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/viewComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn"
+            android:text="@string/view_comment"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/complain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn"
+            android:text="@string/complain"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/myComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn"
+            android:text="@string/my_comment"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+</RelativeLayout>

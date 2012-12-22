@@ -35,16 +35,16 @@ public class ResList extends TabActivity {
 				myTabhost.getTabContentView(), true);
 		myTabhost.setBackgroundColor(Color.GRAY);
 
-		myTabhost.addTab(myTabhost.newTabSpec("One").setIndicator("°´¾àÀë")
+		myTabhost.addTab(myTabhost.newTabSpec("One").setIndicator("æŒ‰è·ç¦»")
 				.setContent(R.id.list_dist));
 
-		myTabhost.addTab(myTabhost.newTabSpec("Two").setIndicator("°´ÆÀ·Ö")
+		myTabhost.addTab(myTabhost.newTabSpec("Two").setIndicator("æŒ‰è¯„åˆ†")
 				.setContent(R.id.list_rate));
 
-		myTabhost.addTab(myTabhost.newTabSpec("Three").setIndicator("°´Óµ¼·³Ì¶È")
+		myTabhost.addTab(myTabhost.newTabSpec("Three").setIndicator("æŒ‰æ‹¥æŒ¤ç¨‹åº¦")
 				.setContent(R.id.list_status));
 
-		// ³õÊ¼»¯TabÑ¡Ïî¿¨±³¾°É«
+		// åˆå§‹åŒ–Tabé€‰é¡¹å¡èƒŒæ™¯è‰²
 		for (int i = 0; i < tabWidget.getChildCount(); i++) {
 
 			View vvv = tabWidget.getChildAt(i);
@@ -58,7 +58,7 @@ public class ResList extends TabActivity {
 				vvv.setBackgroundColor(Color.GRAY);
 		}
 
-		// µ±µã»÷tabÑ¡Ïî¿¨µÄÊ±ºò£¬¸ü¸Äµ±Ç°µÄ±³¾°£¬²¢×°ÔØ¶ÔÓ¦µÄactivity
+		// å½“ç‚¹å‡»tabé€‰é¡¹å¡çš„æ—¶å€™ï¼Œæ›´æ”¹å½“å‰çš„èƒŒæ™¯ï¼Œå¹¶è£…è½½å¯¹åº”çš„activity
 		myTabhost.setOnTabChangedListener(new OnTabChangeListener() {
 			public void onTabChanged(String tagString) {
 
@@ -84,55 +84,55 @@ public class ResList extends TabActivity {
 		initList();
 	}
 
-	// »ñÈ¡Ìî³äListView
+	// è·å–å¡«å……ListView
 	private void initList() {
-		// µÃµ½ÏëÒªÌî³äµÄListView
+		// å¾—åˆ°æƒ³è¦å¡«å……çš„ListView
 		mData = getData();
 		ListView lv = (ListView) findViewById(R.id.listView3);
 		MyAdapter adapter = new MyAdapter(this);
 		lv.setAdapter(adapter);
 	}
 
-	// »ñÈ¡Ìî³äÊı¾İ
+	// è·å–å¡«å……æ•°æ®
 	private ArrayList<HashMap<String, Object>> getData() {
 
 		ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		map.put("resName", "Ñ§ÎåÊ³ÌÃ");
-		map.put("favDish", "¹¬±£¼¦¶¡£¬×ÎÈ»¼¦¿é");
-		map.put("status", "Óµ¼·");
+		map.put("resName", "å­¦äº”é£Ÿå ‚");
+		map.put("favDish", "å®«ä¿é¸¡ä¸ï¼Œå­œç„¶é¸¡å—");
+		map.put("status", "æ‹¥æŒ¤");
 		map.put("img", R.drawable.xuewu);
 		map.put("mark", "4.5");
 		listItem.add(map);
 
 		map = new HashMap<String, Object>();
-		map.put("resName", "Ñ§Ò»Ê³ÌÃ");
-		map.put("favDish", "µØÈıÏÊ£¬À±×Ó¼¦£¬¶¬²Ë°ü");
-		map.put("status", "Óµ¼·");
+		map.put("resName", "å­¦ä¸€é£Ÿå ‚");
+		map.put("favDish", "åœ°ä¸‰é²œï¼Œè¾£å­é¸¡ï¼Œå†¬èœåŒ…");
+		map.put("status", "æ‹¥æŒ¤");
 		map.put("img", R.drawable.xueyi);
 		map.put("mark", "4.0");
 		listItem.add(map);
 
 		map = new HashMap<String, Object>();
-		map.put("resName", "¿µÖĞÊ³ÌÃ");
-		map.put("favDish", "¼¦ÍÈ·¹£¬¿§à¬¼¦Èâ·¹");
-		map.put("status", "»¹ºÃ");
+		map.put("resName", "åº·ä¸­é£Ÿå ‚");
+		map.put("favDish", "é¸¡è…¿é¥­ï¼Œå’–å–±é¸¡è‚‰é¥­");
+		map.put("status", "è¿˜å¥½");
 		map.put("img", R.drawable.kangzhong);
 		map.put("mark", "3.5");
 		listItem.add(map);
 
 		map = new HashMap<String, Object>();
-		map.put("resName", "Å©Ô°²ÍÌü");
-		map.put("favDish", "ÂéÀ±Ïã¹ø£¬ìÒÌÀ");
-		map.put("status", "¿íËÉ");
+		map.put("resName", "å†œå›­é¤å…");
+		map.put("favDish", "éº»è¾£é¦™é”…ï¼Œç…²æ±¤");
+		map.put("status", "å®½æ¾");
 		map.put("img", R.drawable.nongyuan);
 		map.put("mark", "3.0");
 		listItem.add(map);
 		return listItem;
 	}
 
-	// ListView ÖĞÄ³Ïî±»Ñ¡ÖĞºó
+	// ListView ä¸­æŸé¡¹è¢«é€‰ä¸­å
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Log.w("MyListView-click", (String) mData.get(position).get("resName"));
 	}

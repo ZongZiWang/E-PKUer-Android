@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Window;
 
-//³ÌĞòÆô¶¯Ê±µ÷ÓÃµÄµÚÒ»¸öactivity
+//ç¨‹åºå¯åŠ¨æ—¶è°ƒç”¨çš„ç¬¬ä¸€ä¸ªactivity
 public class MainActivity extends Activity {
 
 	/* Called when the activity is first created. */
@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
-		prepare();// ¼ì²éµÇÂ½
+		prepare();// æ£€æŸ¥ç™»é™†
 
 	}
 
@@ -26,18 +26,18 @@ public class MainActivity extends Activity {
 		String username = sp.getString("USERNAME", "null");
 		String password = sp.getString("PASSWORD", "null");
 
-		// Ã»ÓĞµÇÂ¼¼ÇÂ¼
+		// æ²¡æœ‰ç™»å½•è®°å½•
 		if (username.equals("null") && password.equals("null")) {
 			//Intent i = new Intent(this, Login.class);
 			Intent i = new Intent(this, CmtList.class);
 			startActivity(i);
-		} else { // ³¢ÊÔµÇÂ½
+		} else { // å°è¯•ç™»é™†
 			Database db = new Database(this);
 			db.open();
 
-			// ÈôÊ§°Ü ×ªµ½login£¬ToastÌáĞÑ
+			// è‹¥å¤±è´¥ è½¬åˆ°loginï¼ŒToastæé†’
 			// TODO:
-			// Èô³É¹¦£¬×ªµ½main
+			// è‹¥æˆåŠŸï¼Œè½¬åˆ°main
 			// TODO:
 		}
 	}

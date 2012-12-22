@@ -51,7 +51,7 @@ public class Database {
 	
 	private final String DABABASE_NAME="db.db";
 	private final String TABLE_NAME="epkuer";
-	//	×¢Òâ´´½¨±íµÄSQLÓï¾äÓ¦¸ÃÊÇ£ºcreate table tableName ();ËùÒÔÒª×¢Òâ¼Ó¿Õ¸ñ£¬»¹ÓĞ±íÃû²»ÄÜÎªtable
+	//	æ³¨æ„åˆ›å»ºè¡¨çš„SQLè¯­å¥åº”è¯¥æ˜¯ï¼šcreate table tableName ();æ‰€ä»¥è¦æ³¨æ„åŠ ç©ºæ ¼ï¼Œè¿˜æœ‰è¡¨åä¸èƒ½ä¸ºtable
 	private final String TABLE_CREATED="create table "+TABLE_NAME+" (_id integer primary key autoincrement,accounts text not null, "
 			+ "pass text not null,created text not null);";
 	private final String TABLE_NOT_EXISTS_CREATED="create table if not exists "+TABLE_NAME+" (_id integer primary key autoincrement,image text not null, "
@@ -106,7 +106,7 @@ public class Database {
 		return mdb.insert(TABLE_NAME, null,values);
 	}
 	
-	//	É¾³ı¶ÔÓ¦idµÄËùÓĞ¼ÇÂ¼
+	//	åˆ é™¤å¯¹åº”idçš„æ‰€æœ‰è®°å½•
 	public boolean delete(int id){
 		return mdb.delete(TABLE_NAME, KEY+"="+id, null)>0;
 	}
@@ -163,7 +163,7 @@ public class Database {
 	}
 	
 	public String createdTime(){
-		java.text.SimpleDateFormat sdf =new java.text.SimpleDateFormat("yyyyÄêMMÔÂddÈÕ   HH:mm:ss");
+		java.text.SimpleDateFormat sdf =new java.text.SimpleDateFormat("yyyyå¹´MMæœˆddæ—¥   HH:mm:ss");
 		java.util.Date date=new java.util.Date(System.currentTimeMillis());
 		String str=sdf.format(date);
 		return str;

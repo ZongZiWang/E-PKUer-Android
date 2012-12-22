@@ -12,7 +12,7 @@ import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-//继承SimpleAdapter，重载了一些函数实现的自己的Adapter
+//缁ф壙SimpleAdapter锛岄噸杞戒簡涓�浜涘嚱鏁板疄鐜扮殑鑷繁鐨凙dapter
 public class MySimpleAdapter extends SimpleAdapter {
 	private int[] mTo;
 	private String[] mFrom;

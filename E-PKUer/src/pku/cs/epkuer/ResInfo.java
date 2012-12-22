@@ -15,13 +15,13 @@ public class ResInfo extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.resinfo);
 		TextView tv = (TextView) this.findViewById(R.id.restaurant_name);
-		tv.setText("¿µ²©Ë¹ÖĞ²Í¹İ");
+		tv.setText("åº·åšæ–¯ä¸­é¤é¦†");
 		RatingBar rb = (RatingBar) this.findViewById(R.id.ratingBar);
 		rb.setRating(3);
 		ImageView iv = (ImageView) this.findViewById(R.id.restaurant_view);
 		iv.setImageResource(R.drawable.kangzhong);
 		LinearLayout ll = (LinearLayout) this.findViewById(R.id.recList);
-		String[] recList = { "¼¦ÍÈ·¹", "·ÊÅ£·¹", "ÍÁ¶¹±ı" };
+		String[] recList = { "é¸¡è…¿é¥­", "è‚¥ç‰›é¥­", "åœŸè±†é¥¼" };
 		for (String str : recList) {
 			tv = new TextView(this);
 			tv.setText(str);
@@ -29,7 +29,7 @@ public class ResInfo extends Activity implements OnClickListener {
 			ll.addView(tv);
 		}
 		tv = (TextView) this.findViewById(R.id.Fee);
-		tv.setText(8 + "Ôª");
+		tv.setText(8 + "å…ƒ");
 
 		Button btn = (Button) findViewById(R.id.crowd_high);
 		btn.setTextColor(Color.RED);
@@ -37,14 +37,14 @@ public class ResInfo extends Activity implements OnClickListener {
 		tv = (TextView) this.findViewById(R.id.user1);
 		tv.setText("echo");
 		tv= (TextView) this.findViewById(R.id.comment1);
-		tv.setText("·¹ºÃÄÑ³Ô°¡~~");
+		tv.setText("é¥­å¥½éš¾åƒå•Š~~");
 		rb = (RatingBar) this.findViewById(R.id.rating1);
 		rb.setRating(2);
 		
 		tv = (TextView) this.findViewById(R.id.user2);
-		tv.setText("É½ÄÏË®±±");
+		tv.setText("å±±å—æ°´åŒ—");
 		tv= (TextView) this.findViewById(R.id.comment2);
-		tv.setText("·ÊÅ£·¹ºÍÂéÆÅ¶¹¸¯·¹¶¼ºÜºÃ³Ô£¡£¡·¹µã¶ùÈËºÜ¶à£¬¼¦ÍÈ·¹×ÜÊÇÇÀ²»µ½T_T");
+		tv.setText("è‚¥ç‰›é¥­å’Œéº»å©†è±†è…é¥­éƒ½å¾ˆå¥½åƒï¼ï¼é¥­ç‚¹å„¿äººå¾ˆå¤šï¼Œé¸¡è…¿é¥­æ€»æ˜¯æŠ¢ä¸åˆ°T_T");
 		rb = (RatingBar) this.findViewById(R.id.rating2);
 		rb.setRating(4);		
 		

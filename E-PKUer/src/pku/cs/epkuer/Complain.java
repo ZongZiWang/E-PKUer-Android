@@ -11,7 +11,7 @@ public class Complain extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complain);
         TextView tv = (TextView) this.findViewById(R.id.restaurant_name);
-		tv.setText("øµ≤©Àπ÷–≤Õπ›");
+		tv.setText("Â∫∑ÂçöÊñØ‰∏≠È§êÈ¶Ü");
     }
 
 }

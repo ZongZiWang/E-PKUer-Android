@@ -32,7 +32,7 @@ public class Signup extends Activity implements OnClickListener {
 		switch (v.getId()) {
 
 		case R.id.signup_btn_signup:
-			// TODO:验证注册，成功则跳转到main，否则toast
+			// TODO:楠岃瘉娉ㄥ唽锛屾垚鍔熷垯璺宠浆鍒癿ain锛屽惁鍒檛oast
 			break;
 		}
 	}

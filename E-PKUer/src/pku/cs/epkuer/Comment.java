@@ -13,9 +13,9 @@ public class Comment extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment);
         TextView tv=(TextView)this.findViewById(R.id.restaurant_name);
-        tv.setText("¿µ²©Ë¹ÖĞ²ÍÌü");
+        tv.setText("åº·åšæ–¯ä¸­é¤å…");
         LinearLayout ll = (LinearLayout) this.findViewById(R.id.recList);
-		String[] recList = { "¼¦ÍÈ·¹", "·ÊÅ£·¹", "ÍÁ¶¹±ı" };
+		String[] recList = { "é¸¡è…¿é¥­", "è‚¥ç‰›é¥­", "åœŸè±†é¥¼" };
 		CheckBox cb=null;
 		int n=1;
 		for (String str : recList) {

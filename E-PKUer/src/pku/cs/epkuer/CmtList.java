@@ -15,56 +15,56 @@ public class CmtList extends Activity implements OnScrollListener {
 	MySimpleAdapter listItemAdapter;
 	private int lastItem;
 	private int count;
-	private View moreView; // ¼ÓÔØ¸ü¶àÒ³Ãæ
+	private View moreView; // åŠ è½½æ›´å¤šé¡µé¢
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comment_list);
 		TextView tv = (TextView) this.findViewById(R.id.restaurant_name);
-		tv.setText("¿µ²©Ë¹ÖĞ²ÍÌü");
+		tv.setText("åº·åšæ–¯ä¸­é¤å…");
 
 		list = (ListView) findViewById(R.id.commentList);
 		moreView = getLayoutInflater().inflate(R.layout.load, null);
-		// Éú³É¶¯Ì¬Êı×é£¬¼ÓÈëÊı¾İ
+		// ç”ŸæˆåŠ¨æ€æ•°ç»„ï¼ŒåŠ å…¥æ•°æ®
 		listItem = new ArrayList<HashMap<String, Object>>();
 		
 		for (int i = 0; i < 10; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("ItemTitle", "Username " + i);
-			map.put("ItemText", "¼¦ÍÈ·¹ºÃ³Ô");
+			map.put("ItemText", "é¸¡è…¿é¥­å¥½åƒ");
 			map.put("ItemMark", "4.5");
 			listItem.add(map);
 		}
 		count = listItem.size();
-		// Éú³ÉÊÊÅäÆ÷µÄItemºÍ¶¯Ì¬Êı×é¶ÔÓ¦µÄÔªËØ
+		// ç”Ÿæˆé€‚é…å™¨çš„Itemå’ŒåŠ¨æ€æ•°ç»„å¯¹åº”çš„å…ƒç´ 
 		//ListView lv = (ListView) findViewById(R.id.commentList);
 		//MyAdapter adapter = new MyAdapter(this);
 
-		listItemAdapter = new MySimpleAdapter(this, listItem,// Êı¾İÔ´
-				R.layout.comment_item,// ListItemµÄXMLÊµÏÖ
-				// ¶¯Ì¬Êı×éÓëImageItem¶ÔÓ¦µÄ×ÓÏî
+		listItemAdapter = new MySimpleAdapter(this, listItem,// æ•°æ®æº
+				R.layout.comment_item,// ListItemçš„XMLå®ç°
+				// åŠ¨æ€æ•°ç»„ä¸ImageItemå¯¹åº”çš„å­é¡¹
 				new String[] { "ItemTitle", "ItemText","ItemMark" },
-				// ImageItemµÄXMLÎÄ¼şÀïÃæµÄÒ»¸öImageView,Á½¸öTextView ID
+				// ImageItemçš„XMLæ–‡ä»¶é‡Œé¢çš„ä¸€ä¸ªImageView,ä¸¤ä¸ªTextView ID
 				new int[] { R.id.ItemTitle, R.id.ItemText,R.id.ItemRating });
-		list.addFooterView(moreView); // Ìí¼Óµ×²¿view£¬Ò»¶¨ÒªÔÚsetAdapterÖ®Ç°Ìí¼Ó£¬·ñÔò»á±¨´í¡£
-		// Ìí¼Ó²¢ÇÒÏÔÊ¾
+		list.addFooterView(moreView); // æ·»åŠ åº•éƒ¨viewï¼Œä¸€å®šè¦åœ¨setAdapterä¹‹å‰æ·»åŠ ï¼Œå¦åˆ™ä¼šæŠ¥é”™ã€‚
+		// æ·»åŠ å¹¶ä¸”æ˜¾ç¤º
 		list.setAdapter(listItemAdapter);
 		list.setOnItemClickListener(new ListView.OnItemClickListener() {
 			
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-				//setTitle("µã»÷µÚ" + arg2 + "¸öÏîÄ¿" + arg3);
+				//setTitle("ç‚¹å‡»ç¬¬" + arg2 + "ä¸ªé¡¹ç›®" + arg3);
 			}
 		});
-		list.setOnScrollListener(this); // ÉèÖÃlistviewµÄ¹ö¶¯ÊÂ¼ş
+		list.setOnScrollListener(this); // è®¾ç½®listviewçš„æ»šåŠ¨äº‹ä»¶
 	}
 
-	private void loadMoreData() { // ¼ÓÔØ¸ü¶àÊı¾İ
+	private void loadMoreData() { // åŠ è½½æ›´å¤šæ•°æ®
 		count = listItemAdapter.getCount();
 		for (int i = count; i < count + 5; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("ItemTitle", "Username " + i);
-			map.put("ItemText", "¼¦ÍÈ·¹ºÃ³Ô");
+			map.put("ItemText", "é¸¡è…¿é¥­å¥½åƒ");
 			map.put("ItemMark", "4.5");
 			listItem.add(map);
 		}
@@ -73,12 +73,12 @@ public class CmtList extends Activity implements OnScrollListener {
 
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		lastItem = firstVisibleItem + visibleItemCount - 1; // ¼õ1ÊÇÒòÎªÉÏÃæ¼ÓÁË¸öaddFooterView
+		lastItem = firstVisibleItem + visibleItemCount - 1; // å‡1æ˜¯å› ä¸ºä¸Šé¢åŠ äº†ä¸ªaddFooterView
 
 	}
 
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// ÏÂÀ­µ½¿ÕÏĞÊÇ£¬ÇÒ×îºóÒ»¸öitemµÄÊıµÈÓÚÊı¾İµÄ×ÜÊıÊ±£¬½øĞĞ¸üĞÂ
+		// ä¸‹æ‹‰åˆ°ç©ºé—²æ˜¯ï¼Œä¸”æœ€åä¸€ä¸ªitemçš„æ•°ç­‰äºæ•°æ®çš„æ€»æ•°æ—¶ï¼Œè¿›è¡Œæ›´æ–°
 		if (lastItem == count && scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
 			moreView.setVisibility(View.VISIBLE);
 			mHandler.sendEmptyMessage(0);
@@ -86,7 +86,7 @@ public class CmtList extends Activity implements OnScrollListener {
 
 	}
 
-	// ÉùÃ÷Handler
+	// å£°æ˜Handler
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -96,14 +96,14 @@ public class CmtList extends Activity implements OnScrollListener {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				loadMoreData(); // ¼ÓÔØ¸ü¶àÊı¾İ£¬ÕâÀï¿ÉÒÔÊ¹ÓÃÒì²½¼ÓÔØ
+				loadMoreData(); // åŠ è½½æ›´å¤šæ•°æ®ï¼Œè¿™é‡Œå¯ä»¥ä½¿ç”¨å¼‚æ­¥åŠ è½½
 				listItemAdapter.notifyDataSetChanged();
 				moreView.setVisibility(View.GONE);
 
 				if (count > 30) {
-					Toast.makeText(CmtList.this, "Ä¾ÓĞ¸ü¶àÊı¾İ£¡", 3000)
+					Toast.makeText(CmtList.this, "æœ¨æœ‰æ›´å¤šæ•°æ®ï¼", 3000)
 							.show();
-					list.removeFooterView(moreView); // ÒÆ³ıµ×²¿ÊÓÍ¼
+					list.removeFooterView(moreView); // ç§»é™¤åº•éƒ¨è§†å›¾
 				}
 				break;
 			default:

@@ -42,10 +42,10 @@ public class Login extends Activity implements OnClickListener {
 			String psw = mPassEditText.getText().toString();
 			Database db = new Database(Login.this);
 			db.open();
-			// TODO:验证登陆：若失败，则Toast，否则跳转ResList，记录密码
+			// TODO 
 			break;
 		case R.id.login_btn_signup:
-			// 跳转Signup
+			// Signup
 			Intent i = new Intent(this, Signup.class);
 			startActivity(i);
 			break;

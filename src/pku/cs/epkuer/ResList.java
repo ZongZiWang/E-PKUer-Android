@@ -10,6 +10,7 @@ import pku.cs.epkuer.util.StreamTool;
 
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,6 +102,13 @@ public class ResList extends TabActivity {
 				Toast.makeText(getApplicationContext(),
 						(String) mData.get(position).get("resName"),
 						Toast.LENGTH_SHORT).show();
+				Intent intent=new Intent();
+				intent.setClass(getApplicationContext(), ResInfo.class);
+				Bundle bundle=new Bundle();
+				bundle.putInt("id", (Integer) mData.get(position).get("id"));
+				bundle.putInt("img", (Integer) mData.get(position).get("img"));
+				intent.putExtras(bundle);
+				startActivity(intent);	
 			}
 		});
 	}

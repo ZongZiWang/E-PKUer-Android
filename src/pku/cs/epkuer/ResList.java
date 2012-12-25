@@ -6,6 +6,8 @@ import java.util.*;
 
 import org.json.*;
 
+import pku.cs.epkuer.api.API;
+import pku.cs.epkuer.util.ResListItem;
 import pku.cs.epkuer.util.StreamTool;
 
 import android.app.TabActivity;
@@ -22,7 +24,7 @@ public class ResList extends TabActivity {
 	private TabHost myTabhost;
 	protected int myTag = 2;
 	private ArrayList<HashMap<String, Object>> mData;
-	private HashMap<Integer,Integer> images=new HashMap<Integer,Integer>();
+//	private HashMap<Integer,Integer> images=new HashMap<Integer,Integer>();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -88,9 +90,9 @@ public class ResList extends TabActivity {
 
 	// ªÒ»°ÃÓ≥‰ListView
 	private void initList() throws Exception {
-		images.put(2, R.drawable.nongyuan);
-		images.put(3, R.drawable.xuewu);
-		images.put(4, R.drawable.xueyi);
+//		images.put(2, R.drawable.nongyuan);
+//		images.put(3, R.drawable.xuewu);
+//		images.put(4, R.drawable.xueyi);
 		
 		mData = getData();
 		ListView lv = (ListView) findViewById(R.id.listView3);
@@ -117,38 +119,18 @@ public class ResList extends TabActivity {
 	private ArrayList<HashMap<String, Object>> getData() throws Exception {
 
 		ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
+		ArrayList<ResListItem> array=new API().getResList(2);
 		HashMap<String, Object> map = null;
-
-		String path = "http://10.0.2.2:3000/restaurants.json";
-//		String path = "http://162.105.146.21:3000/restaurants.json";
-		URL url = new URL(path);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		// conn.setReadTimeout(5*1000);
-		conn.setRequestMethod("GET");
-		InputStream inStream = conn.getInputStream();
-		byte[] data=StreamTool.ReadInputSream(inStream);
-		String json = new String(data);
-		Log.v("data", json);
-		JSONArray array = new JSONArray(json);
-		for (int i = 0; i < array.length(); i++) {
-
-			JSONObject item = array.getJSONObject(i);
-			Integer id=item.getInt("id");
-			String name = item.getString("name");
-			String recommendations = item.getString("recommendations");
-			String status = item.getString("busy");
-			String evaluation = item.getString("evaluation");
-			map = new HashMap<String, Object>();
-			map.put("id", id);
-			map.put("resName", name);
-			map.put("favDish", recommendations);
-			map.put("status", status);
-			if(images.get(id)==null)
-				map.put("img",R.drawable.xuewu);
-			else
-				map.put("img", images.get(id));
-			map.put("mark", evaluation);
-			listItem.add(map);
+		for (int i = 0; i < array.size(); i++) {
+						ResListItem item = array.get(i);
+						map = new HashMap<String, Object>();
+						map.put("id", item.id);
+						map.put("resName", item.name);
+						map.put("favDish", item.dishes);
+						map.put("status", item.busy);
+						map.put("img", item.img);
+						map.put("mark", ((Float)item.evaluation).toString());
+						listItem.add(map);
 		}
 		return listItem;
 	}

@@ -1,5 +1,7 @@
 package pku.cs.epkuer;
 
+import java.util.HashMap;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -36,6 +38,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		mPassEditText = (EditText) findViewById(R.id.login_edit_pwd);
 		mLoginButton.setOnClickListener(this);
 		mSignupButton.setOnClickListener(this);
+		
 	}
 
 	public void onClick(View v) {

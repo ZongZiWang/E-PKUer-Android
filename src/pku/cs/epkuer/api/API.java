@@ -1,21 +1,30 @@
 package pku.cs.epkuer.api;
 
+import pku.cs.epkuer.R;
 import pku.cs.epkuer.util.*;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class API{
+
+	private HashMap<Integer,Integer> images=new HashMap<Integer,Integer>();
 
 	/**
 	 * µÇÂ½
@@ -48,10 +57,40 @@ public class API{
 		return false;
 	}
 
-	public List<ResListItem> getResList(int order) {
+	public ArrayList<ResListItem> getResList(int order) throws Exception {
 		
 		// TODO Auto-generated method stub
-		return null;
+		images.put(2, R.drawable.nongyuan);
+		images.put(3, R.drawable.xuewu);
+		images.put(4, R.drawable.xueyi);
+		ArrayList<ResListItem> resList = new ArrayList<ResListItem>();
+		String path = "http://10.0.2.2:3000/restaurants.json";
+//		String path = "http://162.105.146.21:3000/restaurants.json";
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// conn.setReadTimeout(5*1000);
+		conn.setRequestMethod("GET");
+		InputStream inStream = conn.getInputStream();
+		byte[] data=StreamTool.ReadInputSream(inStream);
+		String json = new String(data);
+		Log.v("data", json);
+		JSONArray array = new JSONArray(json);
+		ResListItem resItem = null;
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject item = array.getJSONObject(i);
+			resItem= new ResListItem();
+			resItem.id=item.getInt("id");
+			resItem.name = item.getString("name");
+			resItem.busy= item.getString("busy");
+			resItem.evaluation= (float) item.getDouble("evaluation");
+			resItem.dishes=item.getString("recommendations");
+			if(images.get(resItem.id)==null)
+				resItem.img=R.drawable.xuewu;
+			else
+				resItem.img=images.get(resItem.id);
+			resList.add(resItem);
+		}
+		return	resList;
 	}
 
 	public Restaurant getResInfo(int resId) {

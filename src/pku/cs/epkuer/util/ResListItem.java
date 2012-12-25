@@ -5,5 +5,6 @@ public class ResListItem {
 	public String name;
 	public String busy;
 	public float evaluation;
-	public String[] dishes;
+	public int img;
+	public String dishes;
 }

@@ -6,6 +6,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -80,5 +81,5 @@
             android:label="@string/title_cmtlist" >
         </activity>
     </application>
-
+	
 </manifest>

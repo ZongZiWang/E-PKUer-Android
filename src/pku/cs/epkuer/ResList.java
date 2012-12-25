@@ -1,26 +1,23 @@
 package pku.cs.epkuer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+import org.json.*;
+
+import pku.cs.epkuer.util.StreamTool;
+
 import android.app.TabActivity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.*;
+import android.widget.*;
 import android.widget.TabHost.OnTabChangeListener;
-import android.widget.Toast;
 
-public class ResList extends TabActivity{
+public class ResList extends TabActivity {
 	private TabHost myTabhost;
 	protected int myTag = 2;
 	private ArrayList<HashMap<String, Object>> mData;
@@ -79,83 +76,62 @@ public class ResList extends TabActivity{
 				}
 			}
 		});
-		initList();
+		try {
+			initList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// »ñÈ¡Ìî³äListView
-	private void initList() {
+	private void initList() throws Exception {
 		mData = getData();
 		ListView lv = (ListView) findViewById(R.id.listView3);
 		MyAdapter adapter = new MyAdapter(this);
 		lv.setAdapter(adapter);
 		lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
-				Toast.makeText(getApplicationContext(), (String) mData.get(position).get("resName"), Toast.LENGTH_SHORT)
-				.show();
+			public void onItemClick(AdapterView<?> arg0, View v, int position,
+					long id) {
+				Toast.makeText(getApplicationContext(),
+						(String) mData.get(position).get("resName"),
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
 
 	// »ñÈ¡Ìî³äÊý¾Ý
-	private ArrayList<HashMap<String, Object>> getData() {
+	private ArrayList<HashMap<String, Object>> getData() throws Exception {
 
 		ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map = null;
 
-		map.put("resName", "Ñ§ÎåÊ³ÌÃ");
-		map.put("favDish", "¹¬±£¼¦¶¡£¬×ÎÈ»¼¦¿é");
-		map.put("status", "Óµ¼·");
-		map.put("img", R.drawable.xuewu);
-		map.put("mark", "4.5");
-		listItem.add(map);
+		String path = "http://10.0.2.2:3000/restaurants.json";
+//		String path = "http://162.105.146.21:3000/restaurants.json";
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// conn.setReadTimeout(5*1000);
+		conn.setRequestMethod("GET");
+		InputStream inStream = conn.getInputStream();
+		byte[] data=StreamTool.ReadInputSream(inStream);
+		String json = new String(data);
+		Log.v("data", json);
+		JSONArray array = new JSONArray(json);
+		for (int i = 0; i < array.length(); i++) {
 
-		map = new HashMap<String, Object>();
-		map.put("resName", "Ñ§Ò»Ê³ÌÃ");
-		map.put("favDish", "µØÈýÏÊ£¬À±×Ó¼¦£¬¶¬²Ë°ü");
-		map.put("status", "Óµ¼·");
-		map.put("img", R.drawable.xueyi);
-		map.put("mark", "4.0");
-		listItem.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("resName", "¿µÖÐÊ³ÌÃ");
-		map.put("favDish", "¼¦ÍÈ·¹£¬¿§à¬¼¦Èâ·¹");
-		map.put("status", "»¹ºÃ");
-		map.put("img", R.drawable.kangzhong);
-		map.put("mark", "3.5");
-		listItem.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("resName", "Å©Ô°²ÍÌü");
-		map.put("favDish", "ÂéÀ±Ïã¹ø£¬ìÒÌÀ");
-		map.put("status", "¿íËÉ");
-		map.put("img", R.drawable.nongyuan);
-		map.put("mark", "3.0");
-		listItem.add(map);
-		
-		map = new HashMap<String, Object>();
-		map.put("resName", "ÒÕÔ°²ÍÌü");
-		map.put("favDish", "ºìÉÕÅÅ¹Ç");
-		map.put("status", "¿íËÉ");
-		map.put("img", R.drawable.yiyuan);
-		map.put("mark", "2.5");
-		listItem.add(map);		
-		
-		map = new HashMap<String, Object>();
-		map.put("resName", "ÑàÄÏ²ÍÌü");
-		map.put("favDish", "ÂéÀ±Ïã¹ø£¬³´Äê¸â");
-		map.put("status", "Óµ¼·");
-		map.put("img", R.drawable.yannan);
-		map.put("mark", "2.0");
-		listItem.add(map);		
-		
-		map = new HashMap<String, Object>();
-		map.put("resName", "¿µ²©Ë¼½È×Ó²¿");
-		map.put("favDish", "¾Â²Ë½È×Ó");
-		map.put("status", "¿íËÉ");
-		map.put("img", R.drawable.kangjiao);
-		map.put("mark", "1.5");
-		listItem.add(map);
+			JSONObject item = array.getJSONObject(i);
+			String name = item.getString("name");
+			String recommendations = item.getString("recommendations");
+			String status = item.getString("busy");
+			String evaluation = item.getString("evaluation");
+			map = new HashMap<String, Object>();
+			map.put("resName", name);
+			map.put("favDish", recommendations);
+			map.put("status", status);
+			map.put("img", R.drawable.xuewu);
+			map.put("mark", evaluation);
+			listItem.add(map);
+		}
 		return listItem;
 	}
 
@@ -167,7 +143,7 @@ public class ResList extends TabActivity{
 		public TextView mark;
 		public RatingBar rb;
 	}
-	
+
 	public class MyAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;

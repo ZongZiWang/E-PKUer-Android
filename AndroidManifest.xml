@@ -29,11 +29,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
-                <action android:name=".CmtList" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -54,6 +49,11 @@
             android:name=".SignupActivity"
             android:exported="true"
             android:label="@string/title_signup" >
+            <intent-filter>
+                <action android:name=".ResList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ResList"

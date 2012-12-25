@@ -3,7 +3,7 @@
     <string name="app_name">EPKuer</string>
     <string name="hello_world">Hello EPKUer!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">汴地吃货</string>
     <string name="title_login">Login</string>
     <string name="title_signup">Signup</string>
     <string name="title_reslist">食堂列表</string>

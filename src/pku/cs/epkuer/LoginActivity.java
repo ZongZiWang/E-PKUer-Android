@@ -83,8 +83,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.login_btn_signup:
 			// Ìø×ª×¢²á½çÃæ
-//			i = new Intent(this, ResList.class);
-			i = new Intent(this, SignupActivity.class);
+			i = new Intent(this, ResList.class);
+//			i = new Intent(this, SignupActivity.class);
 			startActivity(i);
 			break;
 		}

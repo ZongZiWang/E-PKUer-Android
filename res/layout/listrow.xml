@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/image_bg"
+        android:padding="3dip" >
+
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="80dip"
+            android:layout_height="50dip"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="#040404"
+        android:textSize="15dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/status"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_selector"
-        android:orientation="horizontal"
-        android:padding="5dip" >
+        android:layout_below="@id/restaurant"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="#343434"
+        android:textSize="10dip" />
 
-        <LinearLayout
-            android:id="@+id/thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="5dip"
-            android:background="@drawable/image_bg"
-            android:padding="3dip" >
+    <TextView
+        android:id="@+id/fav_dish"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/status"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="#343434"
+        android:textSize="10dip" />
 
-            <ImageView
-                android:id="@+id/list_image"
-                android:layout_width="80dip"
-                android:layout_height="50dip"
-                />
-        </LinearLayout>
+    <TextView
+        android:id="@+id/rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/restaurant"
+        android:layout_marginRight="5dip"
+        android:gravity="right"
+        android:textColor="#5CACEE"
+        android:textSize="15dip"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/restaurant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/thumbnail"
-            android:layout_toRightOf="@+id/thumbnail"
-            android:text="学五食堂"
-            android:textColor="#040404"
-            android:textSize="15dip"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/restaurant"
-            android:layout_marginTop="1dip"
-            android:layout_toRightOf="@+id/thumbnail"
-            android:text="拥挤"
-            android:textColor="#343434"
-            android:textSize="10dip" />
-        <TextView
-            android:id="@+id/fav_dish"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/status"
-            android:layout_marginTop="1dip"
-            android:layout_toRightOf="@+id/thumbnail"
-            android:text="宫保鸡丁"
-            android:textColor="#343434"
-            android:textSize="10dip" />
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/fav_dish"
+        android:layout_below="@id/rate"
+        android:layout_marginRight="5dip"
+        android:gravity="right"
+        android:numStars="5"
+        android:rating="4.5" >
+    </RatingBar>
 
-        <TextView
-            android:id="@+id/rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/restaurant"
-            android:layout_marginRight="5dip"
-            android:gravity="right"
-            android:text="4.5"
-            android:textColor="#5CACEE"
-            android:textSize="15dip"
-            android:textStyle="bold" />
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/fav_dish"
-            android:layout_below="@id/rate"
-            android:layout_marginRight="5dip"
-            android:gravity="right"
-            android:numStars="5"
-            android:rating="4.5" >
-        </RatingBar>
-    </RelativeLayout>
+</RelativeLayout>

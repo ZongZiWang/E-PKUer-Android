@@ -1,6 +1,5 @@
 package pku.cs.epkuer;
 
-<<<<<<< HEAD
 import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
@@ -9,9 +8,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-=======
-import pku.cs.epkuer.api.API;
->>>>>>> 瀹炵幇浜嗘敞鍐屽拰鐧婚檰鍔熻兘
 
 import android.app.Activity;
 import android.content.Intent;
@@ -56,8 +52,20 @@ public class LoginActivity extends Activity implements OnClickListener {
 				Toast.makeText(this, "请输入完整的用户名和密码！", Toast.LENGTH_SHORT).show();
 				break;
 			}
+			// TODO:验证登陆：若失败，则Toast，否则跳转ResList，记录密码
 			try {
-				if(!API.login(uname, psw)) {
+				String url = "10.0.2.2:3000/usr/login.json/";
+				HttpPost request = new HttpPost(url);
+				JSONObject account = new JSONObject();
+				account.put("user_name", uname);
+				account.put("password", psw);
+				StringEntity se = new StringEntity(account.toString()); 
+				request.setEntity(se);
+				HttpResponse httpResponse = new DefaultHttpClient().execute(request);
+				String retSrc = EntityUtils.toString(httpResponse.getEntity());
+				JSONObject result = new JSONObject(retSrc);
+				String error_code = result.get("error_code").toString();
+				if(error_code!=null) {
 					Toast.makeText(this, "用户名或密码错误!", Toast.LENGTH_SHORT).show();
 				}
 				else {//成功则记录账号信息，并转入食堂列表界面
@@ -75,6 +83,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.login_btn_signup:
 			// 跳转注册界面
+//			i = new Intent(this, ResList.class);
 			i = new Intent(this, SignupActivity.class);
 			startActivity(i);
 			break;

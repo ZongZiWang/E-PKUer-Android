@@ -5,30 +5,22 @@ import pku.cs.epkuer.util.*;
 
 import java.io.IOException;
 <<<<<<< HEAD
-<<<<<<< HEAD
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 =======
-=======
-import java.util.ArrayList;
->>>>>>> å®žçŽ°äº†æ³¨å†Œå’Œç™»é™†åŠŸèƒ½
 import java.util.List;
 
 >>>>>>> ä¿®æ”¹äº†Signupå‡½æ•°ç­‰
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-<<<<<<< HEAD
 import org.json.JSONObject;
 
 
@@ -39,93 +31,55 @@ public class API{
 	
 	public boolean signup(String uname, String psw) throws JSONException , ClientProtocolException, IOException{
 		String url = basicURL + "usr/signup.json/";
-=======
-
-public class API {
-
-	// public static String basicURL="http://162.105.146.21:3000/";
-	public static String basicURL = "http://10.0.2.2:3000/";
-
-	/**
-	 * ×¢²áÐÂÕËºÅ
-	 * 
-	 * @param uname
-	 *            ÓÃ»§Ãû
-	 * @param psw
-	 *            ÃÜÂë
-	 * @return ×¢²á³É¹¦·µ»Øtrue£¬Ê§°Ü·µ»Øfalse
-	 * @throws JSONException
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 */
-	public static boolean signup(String uname, String psw)
-			throws JSONException, ClientProtocolException, IOException {
-		String url = basicURL + "user/signup.json/";
->>>>>>> å®žçŽ°äº†æ³¨å†Œå’Œç™»é™†åŠŸèƒ½
 		HttpPost request = new HttpPost(url);
-		List<NameValuePair> postParametres = new ArrayList<NameValuePair>();
-		postParametres.add(new BasicNameValuePair("name", uname));
-		postParametres.add(new BasicNameValuePair("password", psw));
-		postParametres
-				.add(new BasicNameValuePair("password_confirmation", psw));
-		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
-				postParametres);
-		request.setEntity(formEntity);
+		JSONObject account = new JSONObject();
+		account.put("user_name", uname);
+		account.put("password", psw);
+		StringEntity se = new StringEntity(account.toString()); 
+		request.setEntity(se);
 		HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-		
-		if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)
-			return true;
-		else
-			return false;
+		String retSrc = EntityUtils.toString(httpResponse.getEntity());
+		JSONObject result = new JSONObject(retSrc);
+		String error_code = result.toString();
+		return true;
 	}
 
 	private HashMap<Integer,Integer> images=new HashMap<Integer,Integer>();
 
 	/**
 	 * µÇÂ½
-	 * 
-	 * @param uname
-	 *            ÓÃ»§Ãû
-	 * @param psw
-	 *            ÃÜÂë
-	 * @return ³É¹¦Îªtrue£¬Ê§°ÜÎªfalse
+	 * @param uname	ÓÃ»§Ãû
+	 * @param psw	ÃÜÂë
+	 * @return	³É¹¦Îªtrue£¬Ê§°ÜÎªfalse
 	 * @throws JSONException
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean login(String uname, String psw) throws JSONException,
-			ClientProtocolException, IOException {
-		String url = basicURL + "user/login.json/";
+	public boolean login(String uname, String psw) throws JSONException, ClientProtocolException, IOException {
+		String url = "10.0.2.2:3000/usr/login.json";
 		HttpPost request = new HttpPost(url);
-		List<NameValuePair> postParametres = new ArrayList<NameValuePair>();
-		postParametres.add(new BasicNameValuePair("name", uname));
-		postParametres.add(new BasicNameValuePair("password", psw));
-
-		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
-				postParametres);
-		request.setEntity(formEntity);
+		JSONObject account = new JSONObject();
+		account.put("user_name", uname);
+		account.put("password", psw);
+		StringEntity se = new StringEntity(account.toString()); 
+		request.setEntity(se);
 		HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-
 		String retSrc = EntityUtils.toString(httpResponse.getEntity());
-		if (retSrc.equals("0"))
-			return true;
-		else
+		JSONObject result = new JSONObject(retSrc);
+		String error = result.get("error").toString();
+		if(error!=null)
 			return false;
+		else return true;
 	}
 
 	public boolean logout(long id) {
-
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-<<<<<<< HEAD
 	public ArrayList<ResListItem> getResList(int order) throws Exception {
 		
-=======
-	public List<ResListItem> getResList(int order) {
-
->>>>>>> å®žçŽ°äº†æ³¨å†Œå’Œç™»é™†åŠŸèƒ½
 		// TODO Auto-generated method stub
 		images.put(2, R.drawable.nongyuan);
 		images.put(3, R.drawable.xuewu);
@@ -208,11 +162,11 @@ public class API {
 
 	public void reportBusy(int uid, int resId, int busy) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void makeComplaint(int uid, int resId, String content) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

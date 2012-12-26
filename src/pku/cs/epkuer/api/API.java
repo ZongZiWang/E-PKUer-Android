@@ -9,10 +9,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,31 +27,72 @@ public class API{
 
 	private HashMap<Integer,Integer> images=new HashMap<Integer,Integer>();
 
-	/**
-	 * 登陆
-	 * @param uname	用户名
-	 * @param psw	密码
-	 * @return	成功为true，失败为false
-	 * @throws JSONException
-	 * @throws ClientProtocolException
-	 * @throws IOException
-	 */
-	public boolean login(String uname, String psw) throws JSONException, ClientProtocolException, IOException {
-		String url = "10.0.2.2:3000/usr/login.json";
-		HttpPost request = new HttpPost(url);
-		JSONObject account = new JSONObject();
-		account.put("user_name", uname);
-		account.put("password", psw);
-		StringEntity se = new StringEntity(account.toString()); 
-		request.setEntity(se);
-		HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-		String retSrc = EntityUtils.toString(httpResponse.getEntity());
-		JSONObject result = new JSONObject(retSrc);
-		String error = result.get("error").toString();
-		if(error!=null)
-			return false;
-		else return true;
-	}
+	// public static String basicURL="http://162.105.146.21:3000/";
+		public static String basicURL = "http://10.0.2.2:3000/";
+
+		/**
+		 * 注册新账号
+		 * 
+		 * @param uname
+		 *            用户名
+		 * @param psw
+		 *            密码
+		 * @return 注册成功返回true，失败返回false
+		 * @throws JSONException
+		 * @throws ClientProtocolException
+		 * @throws IOException
+		 */
+		public static boolean signup(String uname, String psw)
+				throws JSONException, ClientProtocolException, IOException {
+			String url = basicURL + "user/signup.json/";
+			HttpPost request = new HttpPost(url);
+			List<NameValuePair> postParametres = new ArrayList<NameValuePair>();
+			postParametres.add(new BasicNameValuePair("name", uname));
+			postParametres.add(new BasicNameValuePair("password", psw));
+			postParametres
+					.add(new BasicNameValuePair("password_confirmation", psw));
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
+					postParametres);
+			request.setEntity(formEntity);
+			HttpResponse httpResponse = new DefaultHttpClient().execute(request);
+			
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)
+				return true;
+			else
+				return false;
+		}
+
+		/**
+		 * 登陆
+		 * 
+		 * @param uname
+		 *            用户名
+		 * @param psw
+		 *            密码
+		 * @return 成功为true，失败为false
+		 * @throws JSONException
+		 * @throws ClientProtocolException
+		 * @throws IOException
+		 */
+		public static boolean login(String uname, String psw) throws JSONException,
+				ClientProtocolException, IOException {
+			String url = basicURL + "user/login.json/";
+			HttpPost request = new HttpPost(url);
+			List<NameValuePair> postParametres = new ArrayList<NameValuePair>();
+			postParametres.add(new BasicNameValuePair("name", uname));
+			postParametres.add(new BasicNameValuePair("password", psw));
+
+			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
+					postParametres);
+			request.setEntity(formEntity);
+			HttpResponse httpResponse = new DefaultHttpClient().execute(request);
+
+			String retSrc = EntityUtils.toString(httpResponse.getEntity());
+			if (retSrc.equals("0"))
+				return true;
+			else
+				return false;
+		}
 
 	public boolean logout(long id) {
 		// TODO Auto-generated method stub

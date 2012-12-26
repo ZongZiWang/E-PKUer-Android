@@ -1,6 +1,7 @@
 package pku.cs.epkuer;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 public class SignupActivity extends Activity implements OnClickListener {
 
+	private static final int LENGTH_SHORT = 0;
 	public EditText mAccountsEditText, mPassEditText, mPassEditText2;
 	Button mSignupButton;
 
@@ -49,29 +51,38 @@ public class SignupActivity extends Activity implements OnClickListener {
 			if(!user_name.equals("") && !password.equals("") && password.equals(password2)) {
 				try {
 					// TODO: 注册功能
-					String url = "10.0.2.2:3000/usr/signup.json/";
+					String url = "http://162.105.146.21:3000/users/signup.json/";
 					HttpPost request = new HttpPost(url);
 					JSONObject account = new JSONObject();
-					account.put("user_name", user_name);
+					account.put("name", user_name);
 					account.put("password", password);
+					account.put("password_confirmation", password2);
 					StringEntity se = new StringEntity(account.toString()); 
 					request.setEntity(se);
 					HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-					String retSrc = EntityUtils.toString(httpResponse.getEntity());
-					JSONObject result = new JSONObject(retSrc);
-					String error_code = result.get("error_code").toString();
-					if(error_code!=null) {
-						Toast.makeText(this, "用户名已存在!", Toast.LENGTH_SHORT).show();
+					if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK) {
+						String retSrc = EntityUtils.toString(httpResponse.getEntity());
+						Toast.makeText(this, retSrc, Toast.LENGTH_SHORT).show();
 					}
-					else {//成功则记录账号信息，并转入食堂列表界面
-						SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
-						Editor editor = sp.edit();
-						editor.putString("USERNAME", user_name);
-						editor.putString("PASSWORD", password);
-						editor.commit();
-						Intent i = new Intent(this, ResList.class);
-						startActivity(i);
+					else {
+						Toast.makeText(this, String.valueOf(httpResponse.getStatusLine().getStatusCode()), LENGTH_SHORT).show();
 					}
+//					String retSrc = EntityUtils.toString(httpResponse.getEntity());
+//					JSONObject result = new JSONObject(retSrc);
+//					String error_code = result.toString();
+					
+//					if(error_code!=null) {
+//						Toast.makeText(this, "用户名已存在!", Toast.LENGTH_SHORT).show();
+//					}
+//					else {//成功则记录账号信息，并转入食堂列表界面
+//						SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
+//						Editor editor = sp.edit();
+//						editor.putString("USERNAME", user_name);
+//						editor.putString("PASSWORD", password);
+//						editor.commit();
+//						Intent i = new Intent(this, ResList.class);
+//						startActivity(i);
+//					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

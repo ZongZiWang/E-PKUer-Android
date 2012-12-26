@@ -1,12 +1,6 @@
 package pku.cs.epkuer;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
+import pku.cs.epkuer.api.API;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -50,42 +44,20 @@ public class SignupActivity extends Activity implements OnClickListener {
 			String password2 = mPassEditText2.getText().toString();
 			if(!user_name.equals("") && !password.equals("") && password.equals(password2)) {
 				try {
-					// TODO: 注册功能
-					String url = "http://162.105.146.21:3000/users/signup.json/";
-					HttpPost request = new HttpPost(url);
-					JSONObject account = new JSONObject();
-					account.put("name", user_name);
-					account.put("password", password);
-					account.put("password_confirmation", password2);
-					StringEntity se = new StringEntity(account.toString()); 
-					request.setEntity(se);
-					HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-					if(httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK) {
-						String retSrc = EntityUtils.toString(httpResponse.getEntity());
-						Toast.makeText(this, retSrc, Toast.LENGTH_SHORT).show();
+					if(API.signup(user_name,password)) {
+						SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
+						Editor editor = sp.edit();
+						editor.putString("USERNAME", user_name);
+						editor.putString("PASSWORD", password);
+						editor.commit();
+						Intent i = new Intent(this, ResList.class);
+						startActivity(i);
 					}
-					else {
-						Toast.makeText(this, String.valueOf(httpResponse.getStatusLine().getStatusCode()), LENGTH_SHORT).show();
-					}
-//					String retSrc = EntityUtils.toString(httpResponse.getEntity());
-//					JSONObject result = new JSONObject(retSrc);
-//					String error_code = result.toString();
+					else Toast.makeText(this, "用户名已经存在！", LENGTH_SHORT).show();
 					
-//					if(error_code!=null) {
-//						Toast.makeText(this, "用户名已存在!", Toast.LENGTH_SHORT).show();
-//					}
-//					else {//成功则记录账号信息，并转入食堂列表界面
-//						SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
-//						Editor editor = sp.edit();
-//						editor.putString("USERNAME", user_name);
-//						editor.putString("PASSWORD", password);
-//						editor.commit();
-//						Intent i = new Intent(this, ResList.class);
-//						startActivity(i);
-//					}
 				} catch (Exception e) {
 					e.printStackTrace();
-				}
+				} 
 			}
 			else if(user_name.equals("") || password.equals("")) {
 				Toast.makeText(this,"用户名和密码不能为空！",Toast.LENGTH_SHORT).show();
@@ -96,5 +68,4 @@ public class SignupActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
-
 }

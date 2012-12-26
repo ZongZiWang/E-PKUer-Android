@@ -4,15 +4,10 @@ import pku.cs.epkuer.R;
 import pku.cs.epkuer.util.*;
 
 import java.io.IOException;
-<<<<<<< HEAD
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
-=======
-import java.util.List;
-
->>>>>>> 修改了Signup函数等
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -25,24 +20,6 @@ import org.json.JSONObject;
 
 
 public class API{
-	
-	//public static String basicURL="http://162.105.146.21:3000/";
-	public static String basicURL="http://10.0.2.2:3000/";
-	
-	public boolean signup(String uname, String psw) throws JSONException , ClientProtocolException, IOException{
-		String url = basicURL + "usr/signup.json/";
-		HttpPost request = new HttpPost(url);
-		JSONObject account = new JSONObject();
-		account.put("user_name", uname);
-		account.put("password", psw);
-		StringEntity se = new StringEntity(account.toString()); 
-		request.setEntity(se);
-		HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-		String retSrc = EntityUtils.toString(httpResponse.getEntity());
-		JSONObject result = new JSONObject(retSrc);
-		String error_code = result.toString();
-		return true;
-	}
 
 	private HashMap<Integer,Integer> images=new HashMap<Integer,Integer>();
 
@@ -73,7 +50,6 @@ public class API{
 	}
 
 	public boolean logout(long id) {
-		
 		// TODO Auto-generated method stub
 		return false;
 	}

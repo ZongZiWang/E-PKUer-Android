@@ -1,21 +1,14 @@
 package pku.cs.epkuer;
 
-import java.io.*;
-import java.net.*;
 import java.util.*;
-
-import org.json.*;
-
 import pku.cs.epkuer.api.API;
 import pku.cs.epkuer.util.ResListItem;
-import pku.cs.epkuer.util.StreamTool;
 
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import android.widget.TabHost.OnTabChangeListener;
@@ -126,7 +119,7 @@ public class ResList extends TabActivity {
 						map = new HashMap<String, Object>();
 						map.put("id", item.id);
 						map.put("resName", item.name);
-						map.put("favDish", item.dishes);
+						map.put("favDish", item.recommendations);
 						map.put("status", item.busy);
 						map.put("img", item.img);
 						map.put("mark", ((Float)item.evaluation).toString());

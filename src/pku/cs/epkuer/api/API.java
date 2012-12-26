@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
@@ -20,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
 
 public class API{
 
@@ -73,7 +70,7 @@ public class API{
 		InputStream inStream = conn.getInputStream();
 		byte[] data=StreamTool.ReadInputSream(inStream);
 		String json = new String(data);
-		Log.v("data", json);
+//		Log.v("data", json);
 		JSONArray array = new JSONArray(json);
 		ResListItem resItem = null;
 		for (int i = 0; i < array.length(); i++) {
@@ -83,7 +80,7 @@ public class API{
 			resItem.name = item.getString("name");
 			resItem.busy= item.getString("busy");
 			resItem.evaluation= (float) item.getDouble("evaluation");
-			resItem.dishes=item.getString("recommendations");
+			resItem.recommendations=item.getString("recommendations");
 			if(images.get(resItem.id)==null)
 				resItem.img=R.drawable.xuewu;
 			else
@@ -93,9 +90,39 @@ public class API{
 		return	resList;
 	}
 
-	public Restaurant getResInfo(int resId) {
+	public Restaurant getResInfo(int resId) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		 String path = "http://10.0.2.2:3000/restaurants/"+resId+".json";
+//			String path = "http://162.105.146.21:3000/restaurants/"+resId+".json";
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// conn.setReadTimeout(5*1000);
+		conn.setRequestMethod("GET");
+		InputStream inStream = conn.getInputStream();
+		byte[] data=StreamTool.ReadInputSream(inStream);
+		String json = new String(data);
+		JSONObject item = new JSONObject(json);
+		Restaurant restaurant=new Restaurant();
+		restaurant.id=item.getInt("id");
+		restaurant.average_cost=(float) item.getDouble("average_cost");
+		restaurant.busy=item.getString("busy");
+		restaurant.category=item.getString("category");
+		restaurant.description=item.getString("description");
+		restaurant.dishes=item.getString("dishes");
+		restaurant.evaluation=(float) item.getDouble("evaluation");
+//		restaurant.evaluation_service=item.getInt("evaluation_service");
+//		restaurant.evaluation_taste=item.getInt("evaluation_taste");
+		restaurant.image_url=item.getString("image_url");
+		restaurant.info_summary=item.getString("info_summary");
+		restaurant.info_tel=item.getString("info_tel");
+		restaurant.info_time=item.getString("info_time");
+//		restaurant.location_latitude=item.getDouble("location_latitude");
+//		restaurant.location_longitude=item.getDouble("location_longitude");
+		restaurant.location_name=item.getString("name");
+		restaurant.location_zone=item.getString("location_zone");
+		restaurant.name=item.getString("name");
+		restaurant.recommendations=item.getString("recommendations");
+		return restaurant;
 	}
 
 	public int makeComment(int uid, int resId, float evaluation,
@@ -118,17 +145,4 @@ public class API{
 		// TODO Auto-generated method stub
 		
 	}
-//String url = "10.0.2.2:3000/usr/login.json/";
-//				HttpPost request = new HttpPost(url);
-//				JSONObject account = new JSONObject();
-//				account.put("user_name", uname);
-//				account.put("password", psw);
-//				StringEntity se = new StringEntity(account.toString()); 
-//				request.setEntity(se);
-//				HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-//				String retSrc = EntityUtils.toString(httpResponse.getEntity());
-//				JSONObject result = new JSONObject(retSrc);
-//				String error_code = result.get("error_code").toString();
-//				if(error_code!=null) {
-//				}
 }

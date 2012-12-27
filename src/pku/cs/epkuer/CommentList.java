@@ -2,45 +2,53 @@ package pku.cs.epkuer;
 
 import java.util.*;
 
+import pku.cs.epkuer.api.API;
+import pku.cs.epkuer.util.Comment;
 import pku.cs.epkuer.util.MySimpleAdapter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 
 @SuppressLint({ "HandlerLeak", "ShowToast" })
-public class CmtList extends Activity implements OnScrollListener {
+public class CommentList extends Activity implements OnScrollListener {
 
 	private ListView list;
 	private ArrayList<HashMap<String, Object>> listItem;
 	MySimpleAdapter listItemAdapter;
 	private int lastItem;
-	private int count;
+	private int count=0;
 	private View moreView; // 加载更多页面
+	private int resId;
+	private ArrayList<Comment> cmtList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comment_list);
+		Intent intent = getIntent();
+		resId = intent.getIntExtra("res_id", 0);
+		String resName = intent.getStringExtra("res_name");
+		count=0;
 		TextView tv = (TextView) this.findViewById(R.id.restaurant_name);
-		tv.setText("康博斯中餐厅");
-
+		tv.setText(resName);
+		
 		list = (ListView) findViewById(R.id.commentList);
 		moreView = getLayoutInflater().inflate(R.layout.load, null);
 		// 生成动态数组，加入数据
 		listItem = new ArrayList<HashMap<String, Object>>();
 		
-		for (int i = 0; i < 10; i++) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("ItemTitle", "Username " + i);
-			map.put("ItemText", "鸡腿饭好吃");
-			map.put("ItemMark", "4.5");
-			listItem.add(map);
+		try {
+			getData();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		count = listItem.size();
 		// 生成适配器的Item和动态数组对应的元素
 		//ListView lv = (ListView) findViewById(R.id.commentList);
 		//MyAdapter adapter = new MyAdapter(this);
@@ -63,13 +71,16 @@ public class CmtList extends Activity implements OnScrollListener {
 		list.setOnScrollListener(this); // 设置listview的滚动事件
 	}
 
-	private void loadMoreData() { // 加载更多数据
+	private void loadMoreData() throws Exception { // 加载更多数据
 		count = listItemAdapter.getCount();
-		for (int i = count; i < count + 5; i++) {
+		cmtList=new API().getComment(resId,count);
+		Comment cmt=null;
+		for (int i = 0; i < cmtList.size(); i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("ItemTitle", "Username " + i);
-			map.put("ItemText", "鸡腿饭好吃");
-			map.put("ItemMark", "4.5");
+			cmt=cmtList.get(i);
+			map.put("ItemTitle", cmt.user_name);
+			map.put("ItemText", cmt.content);
+			map.put("ItemMark", ((Float)cmt.evaluation).toString());
 			listItem.add(map);
 		}
 		count = listItem.size();
@@ -100,12 +111,17 @@ public class CmtList extends Activity implements OnScrollListener {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				loadMoreData(); // 加载更多数据，这里可以使用异步加载
+				try {
+					loadMoreData();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // 加载更多数据，这里可以使用异步加载
 				listItemAdapter.notifyDataSetChanged();
 				moreView.setVisibility(View.GONE);
 
-				if (count > 30) {
-					Toast.makeText(CmtList.this, "木有更多数据！", 3000)
+				if (cmtList.size()==0) {
+					Toast.makeText(CommentList.this, "木有更多数据！", 3000)
 							.show();
 					list.removeFooterView(moreView); // 移除底部视图
 				}
@@ -115,5 +131,21 @@ public class CmtList extends Activity implements OnScrollListener {
 			}
 		};
 	};
-	
+	private void getData() throws Exception{
+
+		cmtList=new API().getComment(resId,count);
+		Comment cmt=null;
+		for (int i = 0; i < cmtList.size(); i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			cmt=cmtList.get(i);
+			Log.v("data","click");
+			map.put("ItemTitle", cmt.user_name);
+			map.put("ItemText", cmt.content);
+			map.put("ItemMark", ((Float)cmt.evaluation).toString());
+			listItem.add(map);
+		}
+		count = listItem.size();
+	}
 }
+
+

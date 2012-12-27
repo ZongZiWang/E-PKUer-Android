@@ -4,6 +4,7 @@ import pku.cs.epkuer.api.API;
 import pku.cs.epkuer.util.Restaurant;
 import pku.cs.epkuer.util.StreamTool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -15,6 +16,7 @@ import android.graphics.Color;
 
 public class ResInfo extends Activity implements OnClickListener {
 
+	public Restaurant res;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,7 +33,7 @@ public class ResInfo extends Activity implements OnClickListener {
 		Intent intent = getIntent();
 		Integer id = intent.getIntExtra("id", 0);
 		Integer img = intent.getIntExtra("img", R.drawable.xuewu);
-		Restaurant res = new API().getResInfo(id);
+		res = new API().getResInfo(id);
 		TextView tv = (TextView) this.findViewById(R.id.restaurant_name);
 		tv.setText(res.name);
 		RatingBar rb = (RatingBar) this.findViewById(R.id.ratingBar);
@@ -75,6 +77,8 @@ public class ResInfo extends Activity implements OnClickListener {
 
 		Button bt = (Button) this.findViewById(R.id.myComment);
 		bt.setOnClickListener(this);
+		bt = (Button) this.findViewById(R.id.viewComment);
+		bt.setOnClickListener(this);
 	}
 
 	public void onClick(View v) {
@@ -82,6 +86,15 @@ public class ResInfo extends Activity implements OnClickListener {
 		if (R.id.myComment == v.getId()) {
 			Intent intent = new Intent();
 			// intent.setClass(ResInfo.this, CommentActivity.class);
+			startActivity(intent);
+		}
+		else if(R.id.viewComment==v.getId()){
+			Intent intent = new Intent();
+			Bundle bundle=new Bundle();
+			bundle.putInt("res_id", res.id);
+			bundle.putString("res_name", res.name);
+			intent.putExtras(bundle);
+			intent.setClass(ResInfo.this, CommentList.class);
 			startActivity(intent);
 		}
 

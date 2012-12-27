@@ -6,7 +6,8 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -39,7 +40,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-                        <intent-filter>
+            <intent-filter>
                 <action android:name=".ResList" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -64,6 +65,11 @@
             android:name=".ResInfo"
             android:exported="true"
             android:label="@string/title_resinfo" >
+            <intent-filter>
+                <action android:name=".CommentList" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".CommentActivity"
@@ -76,10 +82,10 @@
             android:label="@string/title_complain" >
         </activity>
         <activity
-            android:name=".CmtList"
+            android:name=".CommentList"
             android:exported="true"
             android:label="@string/title_cmtlist" >
         </activity>
     </application>
-	
+
 </manifest>

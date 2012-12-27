@@ -1,12 +1,12 @@
 package pku.cs.epkuer.util;
 
 public class Comment {
-	public int id;
-	public int res_id;
-	public int writer_id;
-	public String writer_nickname;
-	public String time;
-	public float evaluation;
-	public float cost;
-	public String content;
+	public int id=0;
+	public int res_id=0;
+	public int user_id=0;
+	public String user_name=null;
+	public String time=null;
+	public float evaluation=0;
+	public float cost=0;
+	public String content=null;
 }

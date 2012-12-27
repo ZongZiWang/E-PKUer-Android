@@ -6,6 +6,7 @@ import pku.cs.epkuer.util.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import org.apache.http.HttpResponse;
@@ -14,13 +15,14 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Log;
 
 
 public class API{
@@ -44,7 +46,7 @@ public class API{
 		 */
 		public static boolean signup(String uname, String psw)
 				throws JSONException, ClientProtocolException, IOException {
-			String url = basicURL + "user/signup.json/";
+			String url = basicURL + "users/signup.json/";
 			HttpPost request = new HttpPost(url);
 			List<NameValuePair> postParametres = new ArrayList<NameValuePair>();
 			postParametres.add(new BasicNameValuePair("name", uname));
@@ -55,7 +57,7 @@ public class API{
 					postParametres);
 			request.setEntity(formEntity);
 			HttpResponse httpResponse = new DefaultHttpClient().execute(request);
-			
+			System.out.println(String.valueOf(httpResponse.getStatusLine().getStatusCode() ));
 			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED)
 				return true;
 			else
@@ -76,7 +78,7 @@ public class API{
 		 */
 		public static boolean login(String uname, String psw) throws JSONException,
 				ClientProtocolException, IOException {
-			String url = basicURL + "user/login.json/";
+			String url = basicURL + "users/login.json/";
 			HttpPost request = new HttpPost(url);
 			List<NameValuePair> postParametres = new ArrayList<NameValuePair>();
 			postParametres.add(new BasicNameValuePair("name", uname));
@@ -99,9 +101,14 @@ public class API{
 		return false;
 	}
 
+	/**
+	 * 
+	 * @param order 给出的排序方式
+	 * @return 餐厅列表
+	 * @throws Exception
+	 */
 	public ArrayList<ResListItem> getResList(int order) throws Exception {
 		
-		// TODO Auto-generated method stub
 		images.put(2, R.drawable.nongyuan);
 		images.put(3, R.drawable.xuewu);
 		images.put(4, R.drawable.xueyi);
@@ -135,8 +142,13 @@ public class API{
 		return	resList;
 	}
 
+	/**
+	 * 
+	 * @param resId 餐厅Id
+	 * @return 餐厅的具体信息
+	 * @throws Exception
+	 */
 	public Restaurant getResInfo(int resId) throws Exception {
-		// TODO Auto-generated method stub
 		 String path = "http://10.0.2.2:3000/restaurants/"+resId+".json";
 //			String path = "http://162.105.146.21:3000/restaurants/"+resId+".json";
 		URL url = new URL(path);
@@ -153,10 +165,8 @@ public class API{
 		restaurant.busy=item.getString("busy");
 		restaurant.category=item.getString("category");
 		restaurant.description=item.getString("description");
-		restaurant.dishes=item.getString("dishes");
+		restaurant.dishes=item.getString("dishesID");
 		restaurant.evaluation=(float) item.getDouble("evaluation");
-//		restaurant.evaluation_service=item.getInt("evaluation_service");
-//		restaurant.evaluation_taste=item.getInt("evaluation_taste");
 		restaurant.image_url=item.getString("image_url");
 		restaurant.info_summary=item.getString("info_summary");
 		restaurant.info_tel=item.getString("info_tel");
@@ -176,9 +186,35 @@ public class API{
 		return 0;
 	}
 
-	public List<Comment> getComment(int resId, int num) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Comment> getComment(int resId, int start) throws Exception {
+		ArrayList<Comment> cmtList = new ArrayList<Comment>();
+		String path = "http://10.0.2.2:3000/restaurants/"+resId+"/comments.json";
+//		String path = "http://162.105.146.21:3000/restaurants/"+resId+"/comments.json";
+		URL url = new URL(path);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// conn.setReadTimeout(5*1000);
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("start", ""+start);
+		InputStream inStream = conn.getInputStream();
+		byte[] data=StreamTool.ReadInputSream(inStream);
+		String json = new String(data);
+		Log.v("data", json);
+		JSONArray array = new JSONArray(json);
+		Comment comment = null;
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject item = array.getJSONObject(i);
+			comment= new Comment();
+			comment.id=item.getInt("id");
+			comment.content=item.getString("content");
+			comment.cost = (float) item.getDouble("cost");
+			comment.user_name= item.getString("user_name");
+			comment.evaluation= (float) item.getDouble("evaluation");
+			comment.res_id=item.getInt("restaurant_id");
+			comment.time=item.getString("time");
+			comment.user_id=item.getInt("user_id");	
+			cmtList.add(comment);
+		}
+		return	cmtList;
 	}
 
 	public void reportBusy(int uid, int resId, int busy) {

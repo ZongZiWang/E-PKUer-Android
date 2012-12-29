@@ -44,6 +44,12 @@ public class ComplainActivity extends Activity {
 				}
 			}
 		});
+		Button cancel_btn = (Button) this.findViewById(R.id.cancel);
+		cancel_btn.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

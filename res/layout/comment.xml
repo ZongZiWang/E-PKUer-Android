@@ -117,18 +117,6 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/fee"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn"
-            android:text="@string/cancel"
-            android:textColor="#ffffff" />
-
-        <Button
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

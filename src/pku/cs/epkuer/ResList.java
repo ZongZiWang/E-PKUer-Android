@@ -169,7 +169,7 @@ public class ResList extends TabActivity {
 
 		
 		ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-		ArrayList<ResListItem> array = new API().getResList(order);
+		ArrayList<ResListItem> array = API.getResList(order);
 		if (order == 1) {
 			locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			location = locMan.getLastKnownLocation(LocationManager.GPS_PROVIDER); 

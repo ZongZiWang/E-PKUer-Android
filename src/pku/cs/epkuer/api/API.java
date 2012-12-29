@@ -117,7 +117,7 @@ public class API {
 	 * @return 餐厅列表
 	 * @throws Exception
 	 */
-	public ArrayList<ResListItem> getResList(int order) throws Exception {
+	public static ArrayList<ResListItem> getResList(int order) throws Exception {
 
 		ArrayList<ResListItem> resList = new ArrayList<ResListItem>();
 		String path = "http://10.0.2.2:3000/restaurants.json";
@@ -237,7 +237,7 @@ public class API {
 	 * @return 返回评论数组
 	 * @throws Exception
 	 */
-	public ArrayList<Comment> getComment(int resId, int start) throws Exception {
+	public static ArrayList<Comment> getComment(int resId, int start) throws Exception {
 		ArrayList<Comment> cmtList = new ArrayList<Comment>();
 		String path = "http://10.0.2.2:3000/restaurants/" + (resId)
 				+ "/comments.json";

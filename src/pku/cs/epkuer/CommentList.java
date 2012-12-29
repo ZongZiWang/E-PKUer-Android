@@ -7,7 +7,6 @@ import pku.cs.epkuer.util.Comment;
 import pku.cs.epkuer.util.MySimpleAdapter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,7 @@ public class CommentList extends Activity implements OnScrollListener {
 	private ArrayList<HashMap<String, Object>> listItem;
 	MySimpleAdapter listItemAdapter;
 	private int lastItem;
-	private int count=0;
+	private int count = 0;
 	private View moreView; // 加载更多页面
 	private int resId;
 	private ArrayList<Comment> cmtList;
@@ -34,37 +33,35 @@ public class CommentList extends Activity implements OnScrollListener {
 		Intent intent = getIntent();
 		resId = intent.getIntExtra("res_id", 0);
 		String resName = intent.getStringExtra("res_name");
-		count=0;
+		count = 0;
 		TextView tv = (TextView) this.findViewById(R.id.restaurant_name);
 		tv.setText(resName);
-		
+
 		list = (ListView) findViewById(R.id.commentList);
 		moreView = getLayoutInflater().inflate(R.layout.load, null);
 		// 生成动态数组，加入数据
 		listItem = new ArrayList<HashMap<String, Object>>();
-		
+
 		try {
 			getData();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// 生成适配器的Item和动态数组对应的元素
-		//ListView lv = (ListView) findViewById(R.id.commentList);
-		//MyAdapter adapter = new MyAdapter(this);
-
 		listItemAdapter = new MySimpleAdapter(this, listItem,// 数据源
 				R.layout.comment_item,// ListItem的XML实现
 				// 动态数组与ImageItem对应的子项
-				new String[] { "ItemTitle", "ItemText","ItemMark" },
+				new String[] { "ItemTitle", "ItemText", "ItemMark" },
 				// ImageItem的XML文件里面的一个ImageView,两个TextView ID
-				new int[] { R.id.ItemTitle, R.id.ItemText,R.id.ItemRating });
+				new int[] { R.id.ItemTitle, R.id.ItemText, R.id.ItemRating });
 		list.addFooterView(moreView); // 添加底部view，一定要在setAdapter之前添加，否则会报错。
 		// 添加并且显示
 		list.setAdapter(listItemAdapter);
 		list.setOnItemClickListener(new ListView.OnItemClickListener() {
-			
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-				//setTitle("点击第" + arg2 + "个项目" + arg3);
+
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// setTitle("点击第" + arg2 + "个项目" + arg3);
 			}
 		});
 		list.setOnScrollListener(this); // 设置listview的滚动事件
@@ -72,14 +69,14 @@ public class CommentList extends Activity implements OnScrollListener {
 
 	private void loadMoreData() throws Exception { // 加载更多数据
 		count = listItemAdapter.getCount();
-		cmtList=new API().getComment(resId,count);
-		Comment cmt=null;
+		cmtList = API.getComment(resId, count);
+		Comment cmt = null;
 		for (int i = 0; i < cmtList.size(); i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			cmt=cmtList.get(i);
+			cmt = cmtList.get(i);
 			map.put("ItemTitle", cmt.user_name);
 			map.put("ItemText", cmt.content);
-			map.put("ItemMark", ((Float)cmt.evaluation).toString());
+			map.put("ItemMark", ((Float) cmt.evaluation).toString());
 			listItem.add(map);
 		}
 		count = listItem.size();
@@ -93,7 +90,8 @@ public class CommentList extends Activity implements OnScrollListener {
 
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// 下拉到空闲是，且最后一个item的数等于数据的总数时，进行更新
-		if (lastItem == count && scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+		if (lastItem == count
+				&& scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
 			moreView.setVisibility(View.VISIBLE);
 			mHandler.sendEmptyMessage(0);
 		}
@@ -118,9 +116,8 @@ public class CommentList extends Activity implements OnScrollListener {
 				listItemAdapter.notifyDataSetChanged();
 				moreView.setVisibility(View.GONE);
 
-				if (cmtList.size()==0) {
-					Toast.makeText(CommentList.this, "木有更多数据！", 3000)
-							.show();
+				if (cmtList.size() == 0) {
+					Toast.makeText(CommentList.this, "木有更多数据！", 3000).show();
 					list.removeFooterView(moreView); // 移除底部视图
 				}
 				break;
@@ -129,39 +126,38 @@ public class CommentList extends Activity implements OnScrollListener {
 			}
 		};
 	};
-	private void getData() throws Exception{
 
-		cmtList=new API().getComment(resId,count);
-		Comment cmt=null;
+	private void getData() throws Exception {
+
+		cmtList = API.getComment(resId, count);
+		Comment cmt = null;
 		for (int i = 0; i < cmtList.size(); i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			cmt=cmtList.get(i);
-			Log.v("data","click");
+			cmt = cmtList.get(i);
 			map.put("ItemTitle", cmt.user_name);
 			map.put("ItemText", cmt.content);
-			map.put("ItemMark", ((Float)cmt.evaluation).toString());
+			map.put("ItemMark", ((Float) cmt.evaluation).toString());
 			listItem.add(map);
 		}
 		count = listItem.size();
 	}
-	
-	public boolean onCreateOptionsMenu(Menu menu) {  
-		super.onCreateOptionsMenu(menu);  
-		menu.add(0, Menu.FIRST+1, 1, "注销");
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, Menu.FIRST + 1, 1, "注销");
 		return true;
 	}
-	public boolean onOptionsItemSelected(MenuItem item) {  
-		super.onOptionsItemSelected(item);  
-		switch(item.getItemId())  
-		{  
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
 		case Menu.FIRST + 1:
 			Intent i = new Intent(this, LoginActivity.class);
 			startActivity(i);
-			break;  
-		default: break;
+			break;
+		default:
+			break;
 		}
 		return true;
 	}
 }
-
-

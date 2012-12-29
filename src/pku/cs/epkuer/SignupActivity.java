@@ -38,31 +38,33 @@ public class SignupActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 
 		case R.id.signup_btn_signup:
-			
+
 			String user_name = mAccountsEditText.getText().toString();
 			String password = mPassEditText.getText().toString();
 			String password2 = mPassEditText2.getText().toString();
-			if(!user_name.equals("") && !password.equals("") && password.equals(password2)) {
+			if (!user_name.equals("") && !password.equals("")
+					&& password.equals(password2)) {
 				try {
-					if(API.signup(user_name,password)) {
-						SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
+					int uid = API.signup(user_name, password);
+					if (uid != -1) {
+						SharedPreferences sp = getSharedPreferences(
+								"USER_INFO", MODE_PRIVATE);
 						Editor editor = sp.edit();
 						editor.putString("USERNAME", user_name);
 						editor.putString("PASSWORD", password);
+						editor.putInt("USERID", uid);
 						editor.commit();
 						Intent i = new Intent(this, ResList.class);
 						startActivity(i);
-					}
-					else Toast.makeText(this, "用户名已经存在！", LENGTH_SHORT).show();
-					
+					} else
+						Toast.makeText(this, "用户名已经存在！", LENGTH_SHORT).show();
+
 				} catch (Exception e) {
 					e.printStackTrace();
-				} 
-			}
-			else if(user_name.equals("") || password.equals("")) {
-				Toast.makeText(this,"用户名和密码不能为空！",Toast.LENGTH_SHORT).show();
-			}
-			else if(!password.equals(password2)) {
+				}
+			} else if (user_name.equals("") || password.equals("")) {
+				Toast.makeText(this, "用户名和密码不能为空！", Toast.LENGTH_SHORT).show();
+			} else if (!password.equals(password2)) {
 				Toast.makeText(this, "两次密码输入不一致！", Toast.LENGTH_SHORT).show();
 			}
 			break;

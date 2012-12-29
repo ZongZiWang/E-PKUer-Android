@@ -29,7 +29,8 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void prepare() throws ClientProtocolException, JSONException, IOException {
+	private void prepare() throws ClientProtocolException, JSONException,
+			IOException {
 
 		SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
 		String username = sp.getString("USERNAME", "null");
@@ -41,10 +42,9 @@ public class MainActivity extends Activity {
 		if (username.equals("null") && password.equals("null")) {
 			i = new Intent(this, LoginActivity.class);
 			startActivity(i);
-		} 
-		else { 
+		} else {
 			// 若失败 转到login，Toast提醒
-			if (API.login(username, password)) {
+			if (API.login(username, password)==-1) {
 				i = new Intent(this, LoginActivity.class);
 				Toast.makeText(this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
 				startActivity(i);

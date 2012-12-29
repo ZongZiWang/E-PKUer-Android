@@ -8,5 +8,5 @@ public class Comment {
 	public String time=null;
 	public float evaluation=0;
 	public float cost=0;
-	public String content=null;
+	public String content;
 }

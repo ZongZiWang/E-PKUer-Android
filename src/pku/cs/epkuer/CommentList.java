@@ -8,14 +8,14 @@ import pku.cs.epkuer.util.MySimpleAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.widget.AbsListView.OnScrollListener;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 
-@SuppressLint({ "HandlerLeak", "ShowToast" })
 public class CommentList extends Activity implements OnScrollListener {
 
 	private ListView list;
@@ -46,7 +46,6 @@ public class CommentList extends Activity implements OnScrollListener {
 		try {
 			getData();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// 生成适配器的Item和动态数组对应的元素
@@ -114,7 +113,6 @@ public class CommentList extends Activity implements OnScrollListener {
 				try {
 					loadMoreData();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} // 加载更多数据，这里可以使用异步加载
 				listItemAdapter.notifyDataSetChanged();
@@ -145,6 +143,24 @@ public class CommentList extends Activity implements OnScrollListener {
 			listItem.add(map);
 		}
 		count = listItem.size();
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {  
+		super.onCreateOptionsMenu(menu);  
+		menu.add(0, Menu.FIRST+1, 1, "注销");
+		return true;
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {  
+		super.onOptionsItemSelected(item);  
+		switch(item.getItemId())  
+		{  
+		case Menu.FIRST + 1:
+			Intent i = new Intent(this, LoginActivity.class);
+			startActivity(i);
+			break;  
+		default: break;
+		}
+		return true;
 	}
 }
 

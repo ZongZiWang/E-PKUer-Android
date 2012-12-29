@@ -41,18 +41,22 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String uname = mAccountsEditText.getText().toString();
 			String psw = mPassEditText.getText().toString();
 			if (uname.equals("") || psw.equals("")) {
-				Toast.makeText(this, "请输入完整的用户名和密码！", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "请输入完整的用户名和密码！", Toast.LENGTH_SHORT)
+						.show();
 				break;
 			}
 			try {
-				if(!API.login(uname, psw)) {
-					Toast.makeText(this, "用户名或密码错误!", Toast.LENGTH_SHORT).show();
-				}
-				else {//成功则记录账号信息，并转入食堂列表界面
-					SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
+				int uid = API.login(uname, psw);
+				if (uid == -1) {
+					Toast.makeText(this, "用户名或密码错误!", Toast.LENGTH_SHORT)
+							.show();
+				} else {// 成功则记录账号信息，并转入食堂列表界面
+					SharedPreferences sp = getSharedPreferences("USER_INFO",
+							MODE_PRIVATE);
 					Editor editor = sp.edit();
 					editor.putString("USERNAME", uname);
 					editor.putString("PASSWORD", psw);
+					editor.putInt("USERID", uid);
 					editor.commit();
 					i = new Intent(this, ResList.class);
 					startActivity(i);

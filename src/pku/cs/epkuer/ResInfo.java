@@ -2,6 +2,9 @@ package pku.cs.epkuer;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import pku.cs.epkuer.api.API;
 import pku.cs.epkuer.util.Restaurant;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.graphics.Color;
 public class ResInfo extends Activity implements OnClickListener {
 
 	public Restaurant res;
+	public String[] recList;
 	private HashMap<String, Integer> images = new HashMap<String, Integer>();
 
 	@Override
@@ -55,28 +59,32 @@ public class ResInfo extends Activity implements OnClickListener {
 		ImageView iv = (ImageView) this.findViewById(R.id.restaurant_view);
 		iv.setImageResource(images.get(res.name));
 		LinearLayout ll = (LinearLayout) this.findViewById(R.id.recList);
-		String recommendations = res.recommendations;
-		String[] recList = recommendations.split("，|,| ");
+		JSONArray recArray = res.recommendations;
+		String recommendations = "";
+		for (int j = 0; j < recArray.length(); j++) {
+			JSONObject recItem = recArray.getJSONObject(j);
+			recommendations = recommendations + recItem.getString("name") + " ";
+		}
+		recList = recommendations.split("，|,| ");
 		for (String str : recList) {
 			tv = new TextView(this);
 			tv.setText(str);
 			tv.setTextColor(Color.BLACK);
 			ll.addView(tv);
-			tv = (TextView) this.findViewById(R.id.Fee);
-			tv.setText(res.average_cost + "元");
 		}
-
+		tv = (TextView) this.findViewById(R.id.Fee);
+		tv.setText(res.average_cost + "元");
 		Button busy_high = (Button) this.findViewById(R.id.crowd_high);
 		Button busy_mid = (Button) this.findViewById(R.id.crowd_mid);
 		Button busy_low = (Button) this.findViewById(R.id.crowd_low);
 		busy_high.setOnClickListener(this);
 		busy_mid.setOnClickListener(this);
 		busy_low.setOnClickListener(this);
-		if (res.busy.equals("拥挤"))
+		if (res.busy==0)
 			busy_high.setTextColor(Color.RED);
-		else if (res.busy.equals("还好"))
+		else if (res.busy==1)
 			busy_mid.setTextColor(Color.YELLOW);
-		else if (res.busy.equals("宽松"))
+		else if (res.busy==2)
 			busy_low.setTextColor(Color.GREEN);
 
 		if (res.rct_cmt1 != null) {
@@ -117,6 +125,7 @@ public class ResInfo extends Activity implements OnClickListener {
 			bundle = new Bundle();
 			bundle.putInt("res_id", res.id);
 			bundle.putString("res_name", res.name);
+			bundle.putStringArray("res_rec", recList);
 			intent.putExtras(bundle);
 			startActivity(intent);
 			break;

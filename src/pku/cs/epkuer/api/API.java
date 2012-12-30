@@ -4,7 +4,6 @@ import pku.cs.epkuer.util.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
@@ -21,12 +20,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationManager;
-import android.util.Log;
 
 public class API {
 
@@ -120,8 +113,7 @@ public class API {
 	public static ArrayList<ResListItem> getResList(int order) throws Exception {
 
 		ArrayList<ResListItem> resList = new ArrayList<ResListItem>();
-		String path = "http://10.0.2.2:3000/restaurants.json";
-		// String path = "http://162.105.146.21:3000/restaurants.json";
+		String path = basicURL + "restaurants.json";
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
@@ -136,9 +128,9 @@ public class API {
 			resItem = new ResListItem();
 			resItem.id = item.getInt("id");
 			resItem.name = item.getString("name");
-			resItem.busy = item.getString("busy");
+			resItem.busy = item.getInt("busy");
 			resItem.evaluation = (float) item.getDouble("evaluation");
-			resItem.recommendations = item.getString("recommendations");
+			resItem.recommendations = item.getJSONArray("partial_recommendations");
 			resList.add(resItem);
 		}
 
@@ -156,21 +148,7 @@ public class API {
 			// 从宽松到拥挤
 			Collections.sort(resList, new Comparator<ResListItem>() {
 				public int compare(ResListItem r1, ResListItem r2) {
-					int b1, b2;
-					if (r1.busy.equals("拥挤"))
-						b1 = 3;
-					else if (r1.busy.equals("还好"))
-						b1 = 2;
-					else
-						b1 = 1;
-					if (r2.busy.equals("拥挤"))
-						b2 = 3;
-					else if (r2.busy.equals("还好"))
-						b2 = 2;
-					else
-						b2 = 1;
-
-					if (b1 > b2)
+					if (r1.busy < r2.busy)
 						return 1;
 					else
 						return -1;
@@ -190,9 +168,7 @@ public class API {
 	 * @throws Exception
 	 */
 	public static Restaurant getResInfo(int resId) throws Exception {
-		String path = "http://10.0.2.2:3000/restaurants/" + resId + ".json";
-		// String path =
-		// "http://162.105.146.21:3000/restaurants/"+resId+".json";
+		String path = basicURL + "restaurants/" + resId + ".json";
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
@@ -203,9 +179,9 @@ public class API {
 		Restaurant restaurant = new Restaurant();
 		restaurant.id = resId;
 		restaurant.name = item.getString("name");
-		restaurant.busy = item.getString("busy");
+		restaurant.busy = item.getInt("busy");
 		restaurant.average_cost = (float) item.getDouble("average_cost");
-		restaurant.recommendations = item.getString("recommendations");
+		restaurant.recommendations = item.getJSONArray("partial_recommendations");
 		restaurant.evaluation = (float) item.getDouble("evaluation");
 		JSONArray jsonObjs = item.getJSONArray("partial_comments");
 		if (jsonObjs.length() > 0) {
@@ -237,12 +213,10 @@ public class API {
 	 * @return 返回评论数组
 	 * @throws Exception
 	 */
-	public static ArrayList<Comment> getComment(int resId, int start) throws Exception {
+	public static ArrayList<Comment> getComment(int resId, int start)
+			throws Exception {
 		ArrayList<Comment> cmtList = new ArrayList<Comment>();
-		String path = "http://10.0.2.2:3000/restaurants/" + (resId)
-				+ "/comments.json";
-		// String path =
-		// "http://162.105.146.21:3000/restaurants/"+resId+"/comments.json";
+		String path = basicURL + "restaurants/" + resId + "/comments.json";
 		URL url = new URL(path);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
@@ -250,7 +224,6 @@ public class API {
 		InputStream inStream = conn.getInputStream();
 		byte[] data = StreamTool.ReadInputSream(inStream);
 		String json = new String(data);
-		Log.v("data", json);
 		JSONArray array = new JSONArray(json);
 		Comment comment = null;
 		for (int i = 0; i < array.length(); i++) {
@@ -319,9 +292,9 @@ public class API {
 	 * @throws Exception
 	 */
 	public static boolean makeComment(int uid, int resId, float evaluation,
-			String content, int[] recDishes, String otherDishes, float cost)
+			String content, String recDishes, float cost)
 			throws Exception {
-		String url = basicURL + "restaurants/" + (resId)
+		String url = basicURL + "restaurants/" + resId
 				+ "/comments/upload.json/";
 		HttpPost request = new HttpPost(url);
 
@@ -333,12 +306,14 @@ public class API {
 				.valueOf(evaluation)));
 		postParametres.add(new BasicNameValuePair("user_id", String
 				.valueOf(uid)));
+		postParametres.add(new BasicNameValuePair("recommendation_dishes", recDishes));
 
 		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(
 				postParametres);
 		request.setEntity(formEntity);
 		HttpResponse httpResponse = new DefaultHttpClient().execute(request);
 		String retSrc = EntityUtils.toString(httpResponse.getEntity());
+		System.out.println(retSrc);
 		JSONObject result;
 		try {
 			result = new JSONObject(retSrc);

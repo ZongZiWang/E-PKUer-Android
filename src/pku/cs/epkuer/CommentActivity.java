@@ -13,6 +13,10 @@ import android.widget.*;
 
 public class CommentActivity extends Activity {
 
+	String[] recList;
+	int n = 1;
+	CheckBox[] cb = new CheckBox[3];
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,17 +27,19 @@ public class CommentActivity extends Activity {
 		tv.setText(resName);
 		// TODO
 		LinearLayout ll = (LinearLayout) this.findViewById(R.id.recList);
-		String[] recList = { "鸡腿饭", "肥牛饭", "土豆饼" };
-		CheckBox cb = null;
+		recList = intent.getStringArrayExtra("res_rec");
+
 		SharedPreferences sp = getSharedPreferences("USER_INFO", MODE_PRIVATE);
 		final int uid = sp.getInt("USERID", -1);
-		int n = 1;
-		for (String str : recList) {
-			cb = new CheckBox(this);
-			cb.setId(n++);
-			cb.setText(str);
-			cb.setTextColor(Color.BLACK);
-			ll.addView(cb);
+
+		if (recList != null) {
+			for (String str : recList) {
+				cb[n - 1] = new CheckBox(this);
+				cb[n - 1].setId(n++);
+				cb[n - 2].setText(str);
+				cb[n - 2].setTextColor(Color.BLACK);
+				ll.addView(cb[n - 2]);
+			}
 		}
 		Button bt = (Button) this.findViewById(R.id.submit);
 		bt.setOnClickListener(new Button.OnClickListener() {
@@ -46,11 +52,17 @@ public class CommentActivity extends Activity {
 				String content = et.getText().toString();
 				et = (EditText) findViewById(R.id.fee);
 				float cost = Float.valueOf(et.getText().toString());
-				int[] recDishes = { 1, 2 };
-				String otherDishes = "没有";
+				et = (EditText) findViewById(R.id.recDish);
+				String otherDishes = et.getText().toString();
+				String recDishes = "";
+				for (int j = 0; j < n - 1; j++) {
+					if (cb[j].isChecked())
+						recDishes = recDishes + cb[j].getText() + " ";
+				}
+				recDishes+=otherDishes;
 				try {
 					if (API.makeComment(uid, resId, evaluation, content,
-							recDishes, otherDishes, cost)) {
+							recDishes,cost)) {
 						Toast.makeText(CommentActivity.this, "评论提交成功！",
 								Toast.LENGTH_SHORT).show();
 						finish();// 返回上个页面

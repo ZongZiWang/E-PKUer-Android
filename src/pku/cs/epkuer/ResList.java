@@ -2,6 +2,9 @@ package pku.cs.epkuer;
 
 import java.util.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import pku.cs.epkuer.api.API;
 import pku.cs.epkuer.util.ResListItem;
 
@@ -22,8 +25,8 @@ public class ResList extends TabActivity {
 	private ArrayList<HashMap<String, Object>> mData1, mData2, mData3;
 	private HashMap<String, Integer> images = new HashMap<String, Integer>();
 	private HashMap<String, Double> locations = new HashMap<String, Double>();
-	LocationManager locMan;  
-    Location location; 
+	LocationManager locMan;
+	Location location;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -100,20 +103,32 @@ public class ResList extends TabActivity {
 		images.put("康博思西餐厅", R.drawable.kangxi);
 		images.put("康博思饺子部", R.drawable.kangjiao);
 		images.put("康博思面食部", R.drawable.mianshi);
-		
-		locations.put("学五食堂经度", 116.313351);locations.put("学五食堂纬度", 39.994971);
-		locations.put("学一食堂经度", 116.314321);locations.put("学一食堂纬度", 39.993532);
-		locations.put("家园餐厅经度", 116.313994);locations.put("家园纬度", 39.994025);
-		locations.put("艺园经度", 116.313414);locations.put("艺园纬度", 39.994356);	
-		locations.put("农园经度", 116.318746);locations.put("农园纬度", 39.99617);	
-		locations.put("松林快餐经度", 116.314833);locations.put("松林快餐纬度", 39.99376);		
-		locations.put("燕南美食经度", 116.316774);locations.put("燕南美食纬度", 39.996571);		
-		locations.put("桂林米粉经度", 116.314371);locations.put("桂林米粉纬度", 39.994201);		
-		locations.put("康博思中餐厅经度", 116.314793);locations.put("康博思中餐厅纬度", 39.994194);		
-		locations.put("康博思西餐厅经度", 116.314784);locations.put("康博思西餐厅纬度", 39.994329);		
-		locations.put("康博思饺子部经度", 116.314789);locations.put("康博思饺子部纬度", 39.994422);
-		locations.put("康博思面食部经度", 116.314699);locations.put("康博思面食部纬度", 39.994532);
-		
+
+		locations.put("学五食堂经度", 116.313351);
+		locations.put("学五食堂纬度", 39.994971);
+		locations.put("学一食堂经度", 116.314321);
+		locations.put("学一食堂纬度", 39.993532);
+		locations.put("家园餐厅经度", 116.313994);
+		locations.put("家园纬度", 39.994025);
+		locations.put("艺园经度", 116.313414);
+		locations.put("艺园纬度", 39.994356);
+		locations.put("农园经度", 116.318746);
+		locations.put("农园纬度", 39.99617);
+		locations.put("松林快餐经度", 116.314833);
+		locations.put("松林快餐纬度", 39.99376);
+		locations.put("燕南美食经度", 116.316774);
+		locations.put("燕南美食纬度", 39.996571);
+		locations.put("桂林米粉经度", 116.314371);
+		locations.put("桂林米粉纬度", 39.994201);
+		locations.put("康博思中餐厅经度", 116.314793);
+		locations.put("康博思中餐厅纬度", 39.994194);
+		locations.put("康博思西餐厅经度", 116.314784);
+		locations.put("康博思西餐厅纬度", 39.994329);
+		locations.put("康博思饺子部经度", 116.314789);
+		locations.put("康博思饺子部纬度", 39.994422);
+		locations.put("康博思面食部经度", 116.314699);
+		locations.put("康博思面食部纬度", 39.994532);
+
 		mData1 = getData(1);
 		ListView lv1 = (ListView) findViewById(R.id.listView2);
 		MyAdapter1 adapter1 = new MyAdapter1(this);
@@ -167,34 +182,39 @@ public class ResList extends TabActivity {
 	private ArrayList<HashMap<String, Object>> getData(int order)
 			throws Exception {
 
-		
 		ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 		ArrayList<ResListItem> array = API.getResList(order);
 		if (order == 1) {
 			locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			location = locMan.getLastKnownLocation(LocationManager.GPS_PROVIDER); 
-			if(location == null)
-				location = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-		     
-	        if(location!=null) {
-	        	Collections.sort(array, new Comparator<ResListItem> () {
+			location = locMan
+					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (location == null)
+				location = locMan
+						.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+			if (location != null) {
+				Collections.sort(array, new Comparator<ResListItem>() {
 					public int compare(ResListItem r1, ResListItem r2) {
-						int abs_lon1 = (int)((locations.get(r1.name+"经度")-location.getLongitude())*1000000);
-						int abs_lat1 = (int)((locations.get(r1.name+"纬度")-location.getLatitude())*1000000);
-						int dist1 = abs_lon1*abs_lon1+abs_lat1*abs_lat1;
-						
-						int abs_lon2 = (int)((locations.get(r2.name+"经度")-location.getLongitude())*1000000);
-						int abs_lat2 = (int)((locations.get(r2.name+"纬度")-location.getLatitude())*1000000);
-						int dist2 = abs_lon2*abs_lon2+abs_lat2*abs_lat2;
-						
-						if (dist1>dist2)
+						int abs_lon1 = (int) ((locations.get(r1.name + "经度") - location
+								.getLongitude()) * 1000000);
+						int abs_lat1 = (int) ((locations.get(r1.name + "纬度") - location
+								.getLatitude()) * 1000000);
+						int dist1 = abs_lon1 * abs_lon1 + abs_lat1 * abs_lat1;
+
+						int abs_lon2 = (int) ((locations.get(r2.name + "经度") - location
+								.getLongitude()) * 1000000);
+						int abs_lat2 = (int) ((locations.get(r2.name + "纬度") - location
+								.getLatitude()) * 1000000);
+						int dist2 = abs_lon2 * abs_lon2 + abs_lat2 * abs_lat2;
+
+						if (dist1 > dist2)
 							return 1;
 						else
 							return -1;
 					}
 				});
-	        }
-	        else Toast.makeText(this, "定位失败！", Toast.LENGTH_SHORT).show();
+			} else
+				Toast.makeText(this, "定位失败！", Toast.LENGTH_SHORT).show();
 		}
 		HashMap<String, Object> map = null;
 		for (int i = 0; i < array.size(); i++) {
@@ -202,8 +222,18 @@ public class ResList extends TabActivity {
 			map = new HashMap<String, Object>();
 			map.put("id", item.id);
 			map.put("resName", item.name);
-			map.put("favDish", item.recommendations);
-			map.put("status", item.busy);
+			JSONArray recArray = item.recommendations;
+			String favDish = "";
+			for (int j = 0; j < recArray.length(); j++) {
+				JSONObject recItem = recArray.getJSONObject(j);
+				favDish = favDish + recItem.getString("name") + " ";
+			}
+			map.put("favDish", favDish);
+			if(item.busy == 0)
+			map.put("status", "拥挤");
+			else if(item.busy == 1)
+				map.put("status", "还好");
+			else map.put("status", "宽松");
 			map.put("img", images.get(item.name));
 			map.put("mark", ((Float) item.evaluation).toString());
 			listItem.add(map);

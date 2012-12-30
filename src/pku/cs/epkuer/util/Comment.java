@@ -9,4 +9,6 @@ public class Comment {
 	public float evaluation=0;
 	public float cost=0;
 	public String content;
+	public String recommendation_dishes = null;
+	public String other_dishes = null;
 }

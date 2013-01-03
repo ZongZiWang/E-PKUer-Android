@@ -107,12 +107,23 @@
         android:inputType="number"
         android:textColor="#000000" >
     </EditText>
-
+    <CheckBox
+        android:id="@+id/sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/fee"
+        android:layout_below="@+id/otherRec"
+        android:text="腾讯微博"
+        android:textColor="#000000"
+        />
+    
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp"
+        android:layout_below="@+id/fee"
+        android:layout_alignParentRight="true"
         android:gravity="fill_horizontal"
         android:orientation="horizontal" >
 
@@ -120,8 +131,6 @@
             android:id="@+id/cancle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/fee"
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:background="@drawable/btn"
@@ -132,9 +141,7 @@
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fee"
             android:layout_margin="3dp"
-            android:layout_toLeftOf="@+id/cancle"
             android:layout_weight="1"
             android:background="@drawable/btn"
             android:text="@string/submit"
